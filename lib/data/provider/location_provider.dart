@@ -4,13 +4,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong/latlong.dart';
 import 'package:living_city/core/Exceptions.dart';
 import 'package:living_city/data/repositories/location_repository.dart';
+
 import '../models/location_model.dart';
 
 class LocationProvider {
   final Geolocator _geolocator = Geolocator();
 
   Future<double> getDistance(LatLng first, LatLng second) async {
-    final double distance = await _geolocator.distanceBetween(
+    final double distance = await Geolocator.distanceBetween(
         first.latitude, first.longitude, second.latitude, second.longitude);
     return distance;
   }
