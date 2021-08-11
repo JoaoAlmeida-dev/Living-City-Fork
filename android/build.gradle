@@ -6,11 +6,10 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:2.3.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
-
 allprojects {
     repositories {
         google()
@@ -28,4 +27,11 @@ subprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+app{
+
+    android{
+        buildToolsVersion "27.0.1"
+    }
 }
