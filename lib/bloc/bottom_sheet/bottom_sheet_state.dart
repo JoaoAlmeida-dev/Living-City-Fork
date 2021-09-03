@@ -15,7 +15,7 @@ class SheetOpen extends BottomSheetState {
 
 class SheetMoving extends BottomSheetState {
   final double factor;
-  const SheetMoving({required this.factor});
+  const SheetMoving({@required this.factor});
 }
 
 //class SheetFixed extends BottomSheetState {}

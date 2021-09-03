@@ -9,13 +9,13 @@ class LoadLocation extends LocationEvent {
   final String address;
   final LatLng coordinates;
 
-  LoadLocation({required this.address, required this.coordinates});
+  LoadLocation({this.address, this.coordinates});
 }
 
 class ShowPreLoadedLocation extends LocationEvent {
   final LocationModel location;
 
-  ShowPreLoadedLocation({required this.location});
+  ShowPreLoadedLocation({@required this.location});
 }
 
 class ClearLocation extends LocationEvent {

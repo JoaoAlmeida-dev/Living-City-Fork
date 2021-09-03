@@ -8,7 +8,7 @@ class DashedLinePainter extends CustomPainter {
   final double dashWidth;
 
   DashedLinePainter(
-      {required this.color,
+      {@required this.color,
       this.minHeight = 6,
       this.minSpace = 4,
       this.margin = 4,
