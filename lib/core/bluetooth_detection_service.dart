@@ -7,7 +7,7 @@ import 'dart:async';
 import 'dart:io' show Platform;
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 
 class BluetoothDetectionService {
   final BluetoothDevicesRepository _bluetoothDevicesRepository;

@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:living_city/data/models/point_of_interest_model.dart';
 
 double clamp(double x, double low, double high) {

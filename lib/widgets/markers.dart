@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CircleMarker extends StatelessWidget {
   final Color color;
 
-  const CircleMarker({Key key, this.color}) : super(key: key);
+  const CircleMarker({required Key key, required this.color}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class TargetCircleMarker extends StatelessWidget {
   final double spreadsize;
   final Color color;
 
-  const TargetCircleMarker({Key key, this.color, this.spreadsize = 8})
+  const TargetCircleMarker({required Key key, required this.color, this.spreadsize = 8})
       : super(key: key);
 
   @override
@@ -59,7 +59,7 @@ class PointOfInterestMarker extends StatelessWidget {
   final Function() onTapCallback;
 
   const PointOfInterestMarker(
-      {Key key, this.color, @required this.onTapCallback})
+      {required Key key, required this.color, required this.onTapCallback})
       : super(key: key);
 
   @override
@@ -82,7 +82,7 @@ class TripPOIMarker extends StatelessWidget {
   final Color color;
   final int order;
 
-  const TripPOIMarker({Key key, this.color, this.order}) : super(key: key);
+  const TripPOIMarker({required Key key, required this.color, required this.order}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +112,7 @@ class TripPOIMarker extends StatelessWidget {
 class TripOriginMarker extends StatelessWidget {
   final Color color;
 
-  const TripOriginMarker({Key key, this.color}) : super(key: key);
+  const TripOriginMarker({required Key key, required this.color}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +141,7 @@ class TripOriginMarker extends StatelessWidget {
 class TripDestinationMarker extends StatelessWidget {
   final Color color;
 
-  const TripDestinationMarker({Key key, this.color}) : super(key: key);
+  const TripDestinationMarker({required Key key, required this.color}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

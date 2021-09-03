@@ -9,7 +9,7 @@ import 'package:living_city/data/models/trip_model.dart';
 import 'package:living_city/data/models/trip_plan_model.dart';
 import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:living_city/core/example_data.dart' as example;
 import 'package:living_city/dependency_injection/injection_container.dart'
     as di;

@@ -1,4 +1,4 @@
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../data/models/location_model.dart';
 import '../data/models/point_of_interest_model.dart';

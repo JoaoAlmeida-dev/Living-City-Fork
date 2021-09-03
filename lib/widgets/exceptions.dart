@@ -6,7 +6,7 @@ class EmptyListException extends StatelessWidget {
   final double imageWidth;
 
   const EmptyListException(
-      {Key key, this.message, this.imageWidth = 192, this.child})
+      {required Key key, required this.message, this.imageWidth = 192, required this.child})
       : super(key: key);
   @override
   Widget build(BuildContext context) {

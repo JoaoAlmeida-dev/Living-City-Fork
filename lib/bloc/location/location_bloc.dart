@@ -7,7 +7,7 @@ import 'package:living_city/data/repositories/location_repository.dart';
 import 'package:living_city/data/repositories/points_of_interest_repository.dart';
 import 'package:living_city/data/repositories/trip_repository.dart';
 import 'package:meta/meta.dart';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 
 part 'location_event.dart';
 part 'location_state.dart';

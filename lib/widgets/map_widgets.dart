@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import '../widgets/markers.dart' as marker_widgets;
 
@@ -9,8 +9,8 @@ class LineMap extends StatelessWidget {
   final double padding;
 
   const LineMap({
-    Key key,
-    @required this.line,
+    required Key key,
+    required this.line,
     this.backgroundColor = const Color(0xffFCFBE7),
     this.padding = 16,
   }) : super(key: key);
@@ -46,10 +46,10 @@ class LineAndMarkersMap extends StatelessWidget {
   final double padding;
 
   const LineAndMarkersMap({
-    Key key,
-    @required this.line,
-    @required this.markers,
-    @required this.target,
+    required Key key,
+    required this.line,
+    required this.markers,
+    required this.target,
     this.backgroundColor = const Color(0xffFCFBE7),
     this.padding = 18,
   }) : super(key: key);
