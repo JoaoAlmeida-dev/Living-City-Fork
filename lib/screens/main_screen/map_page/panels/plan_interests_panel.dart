@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../../../bloc/bs_navigation/bs_navigation_bloc.dart';
 import '../../../../bloc/points_of_interest/points_of_interest_bloc.dart';
@@ -45,7 +45,7 @@ class PlanInterestsPanel extends StatelessWidget {
     final List<PointOfInterestModel> displayItems = scheduleItems
         .where((element) => activeCategories.contains(element.categoryID))
         .toList()
-          ..sort((a, b) => b.sustainability.compareTo(a.sustainability));
+      ..sort((a, b) => b.sustainability.compareTo(a.sustainability));
 
     final int price = activePOIs.fold<int>(
         0,
@@ -188,7 +188,9 @@ class PlanInterestsPanel extends StatelessWidget {
                                   ? 3
                                   : sustainability >= 70
                                       ? 2
-                                      : sustainability >= 60 ? 1 : 0),
+                                      : sustainability >= 60
+                                          ? 1
+                                          : 0),
                           height: 24,
                           width: 24),
                       const SizedBox(width: 8),
@@ -491,7 +493,11 @@ class PointOfInterestItem extends StatelessWidget {
         assert(selected != null),
         leafCount = item.sustainability >= 80
             ? 3
-            : item.sustainability >= 70 ? 2 : item.sustainability >= 60 ? 1 : 0,
+            : item.sustainability >= 70
+                ? 2
+                : item.sustainability >= 60
+                    ? 1
+                    : 0,
         distance = Distance(roundResult: false)
             .as(LengthUnit.Kilometer, origin, item.coordinates)
             .toStringAsFixed(1),

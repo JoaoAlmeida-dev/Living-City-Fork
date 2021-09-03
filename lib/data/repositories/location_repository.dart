@@ -1,7 +1,8 @@
 import 'package:geolocator/geolocator.dart';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:living_city/data/models/location_model.dart';
 import 'package:living_city/data/provider/search_history_provider.dart';
+
 import '../provider/location_provider.dart';
 
 class LocationRepository {

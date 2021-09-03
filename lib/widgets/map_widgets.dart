@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
+
 import '../widgets/markers.dart' as marker_widgets;
 
 class LineMap extends StatelessWidget {
@@ -19,7 +20,7 @@ class LineMap extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlutterMap(
         options: MapOptions(
-          interactive: false,
+          //interactive: false,
           bounds: LatLngBounds.fromPoints(line),
           boundsOptions:
               FitBoundsOptions(padding: EdgeInsets.all(padding), maxZoom: 16),
@@ -58,7 +59,7 @@ class LineAndMarkersMap extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlutterMap(
         options: MapOptions(
-          interactive: false,
+          //interactive: false,
           bounds: LatLngBounds.fromPoints(line),
           boundsOptions:
               FitBoundsOptions(padding: EdgeInsets.all(padding), maxZoom: 16),

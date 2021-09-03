@@ -1,18 +1,18 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
+import 'package:latlong2/latlong.dart';
 import 'package:living_city/bloc/bs_navigation/bs_navigation_bloc.dart';
 import 'package:living_city/bloc/route_request/route_request_bloc.dart';
+import 'package:living_city/core/example_data.dart' as example;
 import 'package:living_city/data/models/location_model.dart';
 import 'package:living_city/data/models/point_of_interest_model.dart';
-import 'package:http/http.dart' as http;
 import 'package:living_city/data/models/trip_model.dart';
 import 'package:living_city/data/models/trip_plan_model.dart';
-import 'package:test/test.dart';
-import 'package:mockito/mockito.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:living_city/core/example_data.dart' as example;
 import 'package:living_city/dependency_injection/injection_container.dart'
     as di;
+import 'package:mockito/mockito.dart';
+import 'package:test/test.dart';
 
 class MockClient extends Mock implements http.Client {}
 
@@ -85,8 +85,9 @@ void main() {
     blocTest<BSNavigationBloc, BSNavigationState>(
       'Test going back to the Start Trip panel from the Interests panel',
       build: () => _bsNavigationBloc,
-      act: (cubit) =>
-          cubit..add(BSNavigationAdvanced())..add(BSNavigationCanceled()),
+      act: (cubit) => cubit
+        ..add(BSNavigationAdvanced())
+        ..add(BSNavigationCanceled()),
       skip: 1,
       expect: [
         isA<BSNavigationPlanningPoints>(),
@@ -164,8 +165,9 @@ void main() {
     blocTest<BSNavigationBloc, BSNavigationState>(
       'Test advancing from the Interests panel to the Restrictions panel',
       build: () => _bsNavigationBloc,
-      act: (cubit) =>
-          cubit..add(BSNavigationAdvanced())..add(BSNavigationAdvanced()),
+      act: (cubit) => cubit
+        ..add(BSNavigationAdvanced())
+        ..add(BSNavigationAdvanced()),
       skip: 1,
       expect: [
         isA<BSNavigationPlanningRestrictions>(),
@@ -403,7 +405,7 @@ void main() {
       'Test successful response from the ROUTE microservice',
       build: () {
         final client = MockClient();
-        when(client.get('placeholder'))
+        when(client.get(Uri.parse('placeholder')))
             .thenAnswer((_) async => http.Response(example.cenario2, 200));
         return RouteRequestBloc(client);
       },
@@ -421,7 +423,7 @@ void main() {
       'Test error response from the ROUTE microservice: not able to create a trip with these constraints',
       build: () {
         final client = MockClient();
-        when(client.get('placeholder'))
+        when(client.get(Uri.parse('placeholder')))
             .thenAnswer((_) async => http.Response('Bad Constraints', 204));
         return RouteRequestBloc(client);
       },
@@ -435,7 +437,7 @@ void main() {
       'Test error due to no internet connection',
       build: () {
         final client = MockClient();
-        when(client.get('placeholder')).thenThrow(Exception());
+        when(client.get(Uri.parse('placeholder'))).thenThrow(Exception());
         return RouteRequestBloc(client);
       },
       act: (cubit) {

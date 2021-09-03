@@ -1,4 +1,4 @@
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:living_city/core/latlng_json_helper.dart';
 
 class BluetoothDeviceModel {

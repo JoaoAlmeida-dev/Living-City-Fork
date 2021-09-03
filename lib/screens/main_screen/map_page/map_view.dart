@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:living_city/data/models/point_of_interest_model.dart';
+import 'package:latlong2/latlong.dart';
+
+import '../../../bloc/bs_navigation/bs_navigation_bloc.dart';
 import '../../../bloc/location/location_bloc.dart';
-import 'package:latlong/latlong.dart';
-import 'dart:math' as Math;
-import '../../../core/distance_helper.dart';
+import '../../../bloc/points_of_interest/points_of_interest_bloc.dart';
 import '../../../bloc/route_request/route_request_bloc.dart';
 import '../../../bloc/user_location/user_location_bloc.dart';
+import '../../../core/distance_helper.dart';
 import '../../../data/models/trip_model.dart';
-import '../../../bloc/bs_navigation/bs_navigation_bloc.dart';
-import '../../../bloc/points_of_interest/points_of_interest_bloc.dart';
 import '../../../widgets/markers.dart' as markers;
-import 'map_controls.dart';
 
 class MapView extends StatefulWidget {
   const MapView();
@@ -104,7 +102,7 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
                       .where((element) => _pointMarkers
                           .any((marker) => marker.point == element))
                       .toList()
-                        ..add(_tripModel.destination.coordinates),
+                    ..add(_tripModel.destination.coordinates),
                   30);
               if (closestPoi != null) {
                 final _linesToRemove = [];

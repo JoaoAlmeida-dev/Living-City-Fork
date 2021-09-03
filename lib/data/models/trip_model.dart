@@ -1,7 +1,8 @@
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:living_city/core/latlng_json_helper.dart';
-import '../models/location_model.dart';
 import 'package:living_city/data/models/point_of_interest_model.dart';
+
+import '../models/location_model.dart';
 
 class TripModel {
   int id; // For database purposes

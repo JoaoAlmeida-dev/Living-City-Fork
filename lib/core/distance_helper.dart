@@ -1,6 +1,6 @@
 import 'dart:math';
+
 import 'package:latlong2/latlong.dart';
-import 'package:living_city/data/models/point_of_interest_model.dart';
 
 double clamp(double x, double low, double high) {
   return x < low ? low : (x > high ? high : x);
@@ -15,11 +15,11 @@ double wrap(double n, double min, double max) {
 }
 
 double mercator(double lat) {
-  return log(tan(lat * 0.5 + PI / 4));
+  return log(tan(lat * 0.5 + pi / 4));
 }
 
 double inverseMercator(double y) {
-  return 2 * atan(exp(y)) - PI / 2;
+  return 2 * atan(exp(y)) - pi / 2;
 }
 
 double hav(double x) {
@@ -101,7 +101,7 @@ int locationIndexOnEdgeOrPath(LatLng point, List<LatLng> poly, bool closed,
   if (size == 0) {
     return -1;
   }
-  double tolerance = toleranceEarth / EARTH_RADIUS;
+  double tolerance = toleranceEarth / earthRadius;
   double havTolerance = hav(tolerance);
   double lat3 = point.latitudeInRad;
   double lng3 = point.longitudeInRad;
@@ -138,12 +138,12 @@ int locationIndexOnEdgeOrPath(LatLng point, List<LatLng> poly, bool closed,
       if (max(lat1, lat2) >= minAcceptable &&
           min(lat1, lat2) <= maxAcceptable) {
         // We offset longitudes by -lng1; the implicit x1 is 0.
-        double x2 = wrap(lng2 - lng1, -PI, PI);
-        double x3Base = wrap(lng3 - lng1, -PI, PI);
+        double x2 = wrap(lng2 - lng1, -pi, pi);
+        double x3Base = wrap(lng3 - lng1, -pi, pi);
         xTry[0] = x3Base;
         // Also explore wrapping of x3Base around the world in both directions.
-        xTry[1] = x3Base + 2 * PI;
-        xTry[2] = x3Base - 2 * PI;
+        xTry[1] = x3Base + 2 * pi;
+        xTry[2] = x3Base - 2 * pi;
         for (double x3 in xTry) {
           double dy = y2 - y1;
           double len2 = x2 * x2 + dy * dy;

@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:living_city/data/repositories/location_repository.dart';
 import 'package:meta/meta.dart';
-import 'package:latlong/latlong.dart';
 
 part 'user_location_event.dart';
 part 'user_location_state.dart';
