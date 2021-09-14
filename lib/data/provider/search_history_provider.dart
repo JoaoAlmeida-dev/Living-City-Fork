@@ -4,7 +4,7 @@ import 'package:path/path.dart';
 import 'dart:async';
 
 class SearchHistoryProvider {
-  Database _db;
+  Database? _db;
 
   Future<void> _init() async {
     _db = await openDatabase(
@@ -31,19 +31,19 @@ class SearchHistoryProvider {
 
     // Count the number of entries. If it's under 10 keep adding them if not replace the oldest.
     int count = Sqflite.firstIntValue(
-        await _db.rawQuery('SELECT COUNT(*) FROM searches'));
+        await _db!.rawQuery('SELECT COUNT(*) FROM searches'))!;
 
     if (count < 10) {
-      await _db.insert(
+      await _db!.insert(
         'searches',
         location.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } else {
       //Delete the first (oldest) entry and insert the new one
-      await _db.rawDelete(
+      await _db!.rawDelete(
           'Delete from searches where id IN (Select id from searches limit 1)');
-      await _db.insert(
+      await _db!.insert(
         'searches',
         location.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
@@ -58,7 +58,7 @@ class SearchHistoryProvider {
       await _init();
     }
 
-    final List<Map<String, dynamic>> maps = await _db.query('searches');
+    final List<Map<String, dynamic>> maps = await _db!.query('searches');
 
     var list = List.generate(maps.length, (i) {
       return LocationModel.fromMap(maps[i]);

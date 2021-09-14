@@ -1,9 +1,8 @@
+import 'dart:async';
 import 'dart:io';
-import 'dart:math' as Math;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jiffy/jiffy.dart';
 
@@ -11,15 +10,15 @@ import '../../../../bloc/bs_navigation/bs_navigation_bloc.dart';
 import '../../../../widgets/CustomDialog.dart';
 
 class PlanRestrictionsPanel extends StatelessWidget {
-  final int visitTime;
-  final int departureDate;
-  final int minVisitTime;
-  final int effort;
-  final int budget;
-  final int minBudget;
+  final int? visitTime;
+  final int? departureDate;
+  final int? minVisitTime;
+  final int? effort;
+  final int? budget;
+  final int? minBudget;
 
   const PlanRestrictionsPanel(
-      {Key key,
+      {Key? key,
       this.visitTime,
       this.effort,
       this.budget,
@@ -113,7 +112,7 @@ class PlanRestrictionsPanel extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        _formatDuration(visitTime ?? minVisitTime),
+                        _formatDuration(visitTime ?? minVisitTime!),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -159,7 +158,9 @@ class PlanRestrictionsPanel extends StatelessWidget {
                             Text(
                               effort == 1
                                   ? 'Easy'
-                                  : effort == 2 ? 'Medium' : 'Hard',
+                                  : effort == 2
+                                      ? 'Medium'
+                                      : 'Hard',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -364,9 +365,9 @@ class PlanRestrictionsPanel extends StatelessWidget {
   }
 
   _showEffortDialog(BuildContext context) async {
-    int selection = 0;
+    int? selection = 0;
     if (Platform.isAndroid) {
-      selection = await showModalBottomSheet<int>(
+      selection = await (showModalBottomSheet<int>(
         context: context,
         isDismissible: false,
         isScrollControlled: false,
@@ -426,9 +427,9 @@ class PlanRestrictionsPanel extends StatelessWidget {
             ),
           ],
         ),
-      );
+      ) as FutureOr<int>);
     } else {
-      selection = await showCupertinoModalPopup(
+      selection = await (showCupertinoModalPopup(
         context: context,
         builder: (context) => CupertinoActionSheet(
           title: Text(
@@ -453,7 +454,7 @@ class PlanRestrictionsPanel extends StatelessWidget {
             ),
           ],
         ),
-      );
+      ) as FutureOr<int>);
     }
     BlocProvider.of<BSNavigationBloc>(context)
         .add(BSNavigationRestrictionAdded(effort: selection));
@@ -692,16 +693,16 @@ _formatDateShort(DateTime date) => Jiffy(date).format("MMMM do");
 // }
 
 class DateDialog extends StatefulWidget {
-  final int initial;
-  final int minimum;
+  final int? initial;
+  final int? minimum;
   final int maximum;
   // final int original;
 
   const DateDialog({
-    Key key,
-    @required this.initial,
-    @required this.minimum,
-    @required this.maximum,
+    Key? key,
+    required this.initial,
+    required this.minimum,
+    required this.maximum,
     // @required this.original,
   }) : super(key: key);
 
@@ -710,7 +711,7 @@ class DateDialog extends StatefulWidget {
 }
 
 class _DateDialogState extends State<DateDialog> {
-  double value;
+  late double value;
   // DateTime date;
 
   @override
@@ -720,7 +721,7 @@ class _DateDialogState extends State<DateDialog> {
     // print('minimum' + widget.minimum.toString());
     // print('maximum' + widget.maximum.toString());
 
-    value = widget.initial.toDouble();
+    value = widget.initial!.toDouble();
     // date = DateTime.fromMillisecondsSinceEpoch(widget.original)
     //     .add(Duration(minutes: value.toInt()));
   }
@@ -749,8 +750,8 @@ class _DateDialogState extends State<DateDialog> {
               //     .add(Duration(minutes: value.toInt()));
             });
           },
-          divisions: ((widget.maximum - widget.minimum) / 15).round(),
-          min: widget.minimum.toDouble(),
+          divisions: ((widget.maximum - widget.minimum!) / 15).round(),
+          min: widget.minimum!.toDouble(),
           max: widget.maximum.toDouble(),
         ),
         Padding(
@@ -759,7 +760,7 @@ class _DateDialogState extends State<DateDialog> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(_formatDurationShort(widget.minimum)),
+              Text(_formatDurationShort(widget.minimum!)),
               Text(_formatDurationShort(widget.maximum))
             ],
           ),
@@ -795,10 +796,10 @@ class _DateDialogState extends State<DateDialog> {
 }
 
 class BudgetDialog extends StatefulWidget {
-  final int initial;
-  final int minimum;
+  final int? initial;
+  final int? minimum;
 
-  const BudgetDialog({Key key, @required this.initial, @required this.minimum})
+  const BudgetDialog({Key? key, required this.initial, required this.minimum})
       : super(key: key);
 
   @override
@@ -806,12 +807,12 @@ class BudgetDialog extends StatefulWidget {
 }
 
 class _BudgetDialogState extends State<BudgetDialog> {
-  double value;
+  late double value;
 
   @override
   void initState() {
     super.initState();
-    value = widget.initial.toDouble();
+    value = widget.initial!.toDouble();
   }
 
   @override
@@ -849,8 +850,8 @@ class _BudgetDialogState extends State<BudgetDialog> {
                 ? value = v
                 : value = (v / 10).round().toDouble() * 10);
           },
-          divisions: ((200.0 - widget.minimum) / 10).round(),
-          min: widget.minimum.toDouble(),
+          divisions: ((200.0 - widget.minimum!) / 10).round(),
+          min: widget.minimum!.toDouble(),
           max: 200.0,
         ),
         Padding(

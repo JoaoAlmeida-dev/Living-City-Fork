@@ -10,7 +10,7 @@ part 'points_of_interest_state.dart';
 
 class PointsOfInterestBloc
     extends Bloc<PointsOfInterestEvent, PointsOfInterestState> {
-  final PointsOfInterestRepository _pointsOfInterestRepository;
+  final PointsOfInterestRepository? _pointsOfInterestRepository;
 
   PointsOfInterestBloc(this._pointsOfInterestRepository)
       : super(const PointsOfInterestInitial());
@@ -26,7 +26,7 @@ class PointsOfInterestBloc
 
   Stream<PointsOfInterestState> _handleFetch() async* {
     yield PointsOfInterestLoading();
-    final pois = await _pointsOfInterestRepository.getPointsOfInterest();
+    final pois = await _pointsOfInterestRepository!.getPointsOfInterest();
     if (pois == null || pois.isEmpty)
       yield PointsOfInterestEmpty();
     else
@@ -35,7 +35,7 @@ class PointsOfInterestBloc
 
   Stream<PointsOfInterestState> _handleQuickFetch() async* {
     yield PointsOfInterestLoading();
-    final pois = await _pointsOfInterestRepository.getLocalPointsOfInterest();
+    final pois = await _pointsOfInterestRepository!.getLocalPointsOfInterest();
     if (pois == null || pois.isEmpty)
       yield PointsOfInterestEmpty();
     else

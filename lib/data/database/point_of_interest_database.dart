@@ -8,7 +8,7 @@ import 'package:sembast/sembast_io.dart';
 
 class PointOfInterestDatabase {
   // Completer is used for transforming synchronous code into asynchronous code.
-  Completer<Database> _dbOpenCompleter;
+  Completer<Database>? _dbOpenCompleter;
 
   Future<Database> get database async {
     // If completer is null, AppDatabaseClass is newly instantiated, so database is not yet opened
@@ -20,7 +20,7 @@ class PointOfInterestDatabase {
     // If the database is already opened, awaiting the future will happen instantly.
     // Otherwise, awaiting the returned future will take some time - until complete() is called
     // on the Completer in _openDatabase() below.
-    return _dbOpenCompleter.future;
+    return _dbOpenCompleter!.future;
   }
 
   Future _openDatabase() async {
@@ -31,6 +31,6 @@ class PointOfInterestDatabase {
 
     final database = await databaseFactoryIo.openDatabase(dbPath);
     // Any code awaiting the Completer's future will now start executing
-    _dbOpenCompleter.complete(database);
+    _dbOpenCompleter!.complete(database);
   }
 }

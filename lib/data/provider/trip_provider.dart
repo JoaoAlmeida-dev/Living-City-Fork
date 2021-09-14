@@ -12,9 +12,9 @@ class TripProvider {
   final _plannedTripsStore = intMapStoreFactory.store(PLANNED_TRIP_STORE_NAME);
   final _currentTripStore = intMapStoreFactory.store(CURRENT_TRIP_STORE_NAME);
 
-  final TripDatabase _tripDatabase;
+  final TripDatabase? _tripDatabase;
 
-  Future<Database> get _db async => await _tripDatabase.database;
+  Future<Database> get _db async => await _tripDatabase!.database;
 
   TripProvider(this._tripDatabase) {
     //_validateStores();
@@ -89,7 +89,7 @@ class TripProvider {
   //     return null;
   // }
 
-  Future<ProgressionTripModel> deleteAndGetCurrent() async {
+  Future<ProgressionTripModel?> deleteAndGetCurrent() async {
     var result = await _currentTripStore.findFirst(await _db);
     if (result != null) {
       ProgressionTripModel trip = ProgressionTripModel.fromJson(result.value);
@@ -140,7 +140,7 @@ class TripProvider {
     }).toList();
   }
 
-  Future<ProgressionTripModel> getCurrent() async {
+  Future<ProgressionTripModel?> getCurrent() async {
     // Finder object can also sort data.
     final finder = Finder();
 

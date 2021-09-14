@@ -9,7 +9,7 @@ part 'search_history_event.dart';
 part 'search_history_state.dart';
 
 class SearchHistoryBloc extends Bloc<SearchHistoryEvent, SearchHistoryState> {
-  final LocationRepository _locationRepository;
+  final LocationRepository? _locationRepository;
 
   SearchHistoryBloc(this._locationRepository)
       : super(const SearchHistoryInitial());
@@ -23,12 +23,12 @@ class SearchHistoryBloc extends Bloc<SearchHistoryEvent, SearchHistoryState> {
 
   Stream<SearchHistoryState> _getSearchHistory() async* {
     yield const SearchHistoryLoading();
-    LocationModel location;
+    LocationModel? location;
     try {
-      location = await _locationRepository.getCurrentLocation();
+      location = await _locationRepository!.getCurrentLocation();
     } catch (e) {}
     final List<LocationModel> searchHistory =
-        await _locationRepository.getSearchHistory();
+        await _locationRepository!.getSearchHistory();
     if (searchHistory == null || searchHistory.isEmpty) {
       yield SearchHistoryEmpty(location);
     } else {

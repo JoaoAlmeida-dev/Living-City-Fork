@@ -5,19 +5,19 @@ import 'package:living_city/data/models/point_of_interest_model.dart';
 import '../models/location_model.dart';
 
 class TripModel {
-  int id; // For database purposes
+  int? id; // For database purposes
 
   final List<TimedPointOfInterestModel> pois;
   final List<LatLng> line;
-  final int startTime;
-  final int endTime;
+  final int? startTime;
+  final int? endTime;
   final LocationModel origin;
   final LocationModel destination;
-  final int sustainability;
-  final int price;
-  final double distance;
-  final int calories;
-  final int durationTime;
+  final int? sustainability;
+  final int? price;
+  final double? distance;
+  final int? calories;
+  final int? durationTime;
 
   TripModel(
       this.pois,
@@ -85,7 +85,7 @@ class TripModel {
 }
 
 class ProgressionTripModel {
-  int id; // For database purposes
+  int? id; // For database purposes
 
   final TripModel originalTrip;
   final List<LatLng> progressLine;

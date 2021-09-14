@@ -12,14 +12,14 @@ class PlanInterestsPanel extends StatelessWidget {
   final List<int> activeCategories;
   final List<PointOfInterestModel> activePOIs;
   final int date;
-  final LatLng origin;
+  final LatLng? origin;
 
   const PlanInterestsPanel(
-      {Key key,
-      @required this.activeCategories,
-      @required this.activePOIs,
-      @required this.date,
-      @required this.origin})
+      {Key? key,
+      required this.activeCategories,
+      required this.activePOIs,
+      required this.date,
+      required this.origin})
       : super(key: key);
 
   @override
@@ -32,7 +32,7 @@ class PlanInterestsPanel extends StatelessWidget {
 
     final List<PointOfInterestModel> scheduleItems = pois
         .where((element) =>
-            date >= element.openingHour && date <= element.closureHour)
+            date >= element.openingHour! && date <= element.closureHour!)
         .toList();
 
     // scheduleItems..sort((a, b) => b.sustainability.compareTo(a.sustainability));
@@ -45,18 +45,18 @@ class PlanInterestsPanel extends StatelessWidget {
     final List<PointOfInterestModel> displayItems = scheduleItems
         .where((element) => activeCategories.contains(element.categoryID))
         .toList()
-      ..sort((a, b) => b.sustainability.compareTo(a.sustainability));
+      ..sort((a, b) => b.sustainability!.compareTo(a.sustainability!));
 
     final int price = activePOIs.fold<int>(
         0,
         (previousValue, element) =>
-            previousValue.toInt() + element.price.toInt());
+            previousValue.toInt() + element.price!.toInt());
 
     final int visitTime = activePOIs.fold<int>(
-        0, (previousValue, element) => previousValue + element.visitTime);
+        0, (previousValue, element) => previousValue + element.visitTime!);
 
     int sustainability = activePOIs.fold<int>(
-        0, (previousValue, element) => previousValue + element.sustainability);
+        0, (previousValue, element) => previousValue + element.sustainability!);
     if (sustainability != 0)
       sustainability = (sustainability / activePOIs.length).round();
 
@@ -284,7 +284,7 @@ class PlanInterestsPanel extends StatelessWidget {
                         bottom: index != displayItems.length - 1 ? 12 : 0),
                     child: PointOfInterestItem(
                       item: displayItems[index],
-                      origin: origin,
+                      origin: origin!,
                       onTap: () => _onTapItem(displayItems[index],
                           activePOIs.contains(displayItems[index]), context),
                       selected: activePOIs.contains(displayItems[index]),
@@ -481,21 +481,21 @@ class PlanInterestsPanel extends StatelessWidget {
 
 class PointOfInterestItem extends StatelessWidget {
   PointOfInterestItem(
-      {Key key,
+      {Key? key,
       // @required this.animation,
       this.onTap,
-      @required this.origin,
-      @required this.item,
+      required this.origin,
+      required this.item,
       this.selected: false})
       :
         // : assert(animation != null),
         assert(item != null),
         assert(selected != null),
-        leafCount = item.sustainability >= 80
+        leafCount = item.sustainability! >= 80
             ? 3
-            : item.sustainability >= 70
+            : item.sustainability! >= 70
                 ? 2
-                : item.sustainability >= 60
+                : item.sustainability! >= 60
                     ? 1
                     : 0,
         distance = Distance(roundResult: false)
@@ -504,7 +504,7 @@ class PointOfInterestItem extends StatelessWidget {
         super(key: key);
 
   // final Animation<double> animation;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final PointOfInterestModel item;
   final bool selected;
   final LatLng origin;
@@ -539,13 +539,13 @@ class PointOfInterestItem extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      categories[item.categoryID - 1].name,
+                      categories[item.categoryID! - 1].name,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(fontSize: 12),
                     ),
                     Text(
-                      item.name,
+                      item.name!,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
@@ -585,7 +585,7 @@ class PointOfInterestItem extends StatelessWidget {
                           shape: BoxShape.circle, color: Colors.black)),
                 ),
                 const SizedBox(width: 6),
-                Text(item.price == 0 ? 'Free' : '${item.price.round()} €',
+                Text(item.price == 0 ? 'Free' : '${item.price!.round()} €',
                     overflow: TextOverflow.ellipsis,
                     style:
                         TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),

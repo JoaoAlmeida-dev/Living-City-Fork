@@ -2,14 +2,14 @@ import 'package:living_city/data/models/location_model.dart';
 import 'package:living_city/data/models/point_of_interest_model.dart';
 
 class TripPlanModel {
-  LocationModel origin;
-  LocationModel destination;
-  int departureDate;
-  int visitTime;
-  int effort;
-  int budget;
-  List<int> categories;
-  List<PointOfInterestModel> pois;
+  LocationModel? origin;
+  LocationModel? destination;
+  int? departureDate;
+  int? visitTime;
+  int? effort;
+  int? budget;
+  List<int>? categories;
+  List<PointOfInterestModel>? pois;
 
   clear() {
     this.origin = null;
@@ -35,13 +35,13 @@ class TripPlanModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'origin': origin.toMapCoords(),
-      'destination': destination.toMapCoords(),
+      'origin': origin!.toMapCoords(),
+      'destination': destination!.toMapCoords(),
       'departureDate': departureDate,
       'visitationTime': visitTime,
       'budget': budget,
       'effortLevel': effort,
-      'selectedPoints': pois.map((e) => e.pointID).toList(growable: false),
+      'selectedPoints': pois!.map((e) => e.pointID).toList(growable: false),
       'selectedCategories': categories,
       'checkWeather': true,
     };

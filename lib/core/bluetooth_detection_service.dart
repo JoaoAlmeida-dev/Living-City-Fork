@@ -1,22 +1,23 @@
+import 'dart:async';
+import 'dart:io' show Platform;
+
 import 'package:flutter/services.dart';
+import 'package:flutter_blue/flutter_blue.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:living_city/core/exceptions.dart';
 import 'package:living_city/data/models/bluetooth_device_model.dart';
 import 'package:living_city/data/repositories/bluetooth_device_repository.dart';
 import 'package:living_city/data/repositories/location_repository.dart';
-import 'dart:async';
-import 'dart:io' show Platform;
-import 'package:flutter_blue/flutter_blue.dart';
-import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:latlong2/latlong.dart';
 
 class BluetoothDetectionService {
-  final BluetoothDevicesRepository _bluetoothDevicesRepository;
-  final LocationRepository _locationRepository;
+  final BluetoothDevicesRepository? _bluetoothDevicesRepository;
+  final LocationRepository? _locationRepository;
 
   static const scanInterval = Duration(seconds: 40);
   static const scanTimeout = Duration(seconds: 10);
 
-  Timer _timer;
+  Timer? _timer;
 
   get _bluetooth => Platform.isAndroid
       ? FlutterBluetoothSerial.instance
@@ -27,7 +28,7 @@ class BluetoothDetectionService {
 
   start() async {
     final duration =
-        await _bluetoothDevicesRepository.getDurationSinceLastEntry();
+        await _bluetoothDevicesRepository!.getDurationSinceLastEntry();
     if (duration == null)
       _workAndSetupTimer();
     else {
@@ -64,7 +65,7 @@ class BluetoothDetectionService {
   Future<int> _scanDevicesAndroid() async {
     if (!await _bluetooth.isEnabled) throw BluetoothOffException();
 
-    final locationStatus = await _locationRepository.getLocationStatus();
+    final locationStatus = await _locationRepository!.getLocationStatus();
     if (!locationStatus.enabled) throw LocationEnabledException();
     if (!locationStatus.permission) throw LocationPermissionException();
     try {
@@ -85,7 +86,7 @@ class BluetoothDetectionService {
 
   Future<int> _scanDevicesIOS() async {
     if (!await _bluetooth.isOn) throw BluetoothOffException();
-    final locationStatus = await _locationRepository.getLocationStatus();
+    final locationStatus = await _locationRepository!.getLocationStatus();
     if (!locationStatus.enabled) throw LocationEnabledException();
     if (!locationStatus.permission) throw LocationPermissionException();
 
@@ -107,11 +108,11 @@ class BluetoothDetectionService {
   _storeResults(int count) async {
     int timestamp = DateTime.now().millisecondsSinceEpoch;
     LatLng coordinates =
-        (await _locationRepository.getCurrentLocation()).coordinates;
+        (await _locationRepository!.getCurrentLocation()).coordinates;
     List<BluetoothDeviceModel> devices = List.generate(
         count, (_) => BluetoothDeviceModel(coordinates, timestamp),
         growable: false);
-    _bluetoothDevicesRepository.storeDevices(devices);
+    _bluetoothDevicesRepository!.storeDevices(devices);
   }
 
   restart() {

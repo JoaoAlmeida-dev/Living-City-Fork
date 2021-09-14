@@ -26,9 +26,9 @@ class LocationProvider {
       //   print(
       //       'Place: (${place.subThoroughfare}, ${place.subLocality}, ${place.name}, ${place.locality}, ${place.administrativeArea}, ${place.subAdministrativeArea}, ${place.thoroughfare}, ${place.position.latitude}, ${place.position.longitude} )');
       // }
-      final String name = placemarks[0].thoroughfare.isNotEmpty
+      final String? name = placemarks[0].thoroughfare!.isNotEmpty
           ? placemarks[0].thoroughfare
-          : placemarks[0].name.isNotEmpty
+          : placemarks[0].name!.isNotEmpty
               ? placemarks[0].name
               : placemarks[0].postalCode;
 
@@ -52,9 +52,9 @@ class LocationProvider {
     //   print(
     //       'Place: (${place.subThoroughfare}, ${place.subLocality}, ${place.postalCode},${place.name}, ${place.locality}, ${place.administrativeArea}, ${place.subAdministrativeArea}, ${place.thoroughfare}, ${place.position.latitude}, ${place.position.longitude} )');
     // }
-    final String name = placemarks[0].thoroughfare.isNotEmpty
+    final String? name = placemarks[0].thoroughfare!.isNotEmpty
         ? placemarks[0].thoroughfare
-        : placemarks[0].name.isNotEmpty
+        : placemarks[0].name!.isNotEmpty
             ? placemarks[0].name
             : placemarks[0].postalCode;
     return LocationModel(coords, name: name, locality: placemarks[0].locality);

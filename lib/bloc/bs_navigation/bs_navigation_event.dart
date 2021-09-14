@@ -10,9 +10,9 @@ class BSNavigationLoadActiveTrip extends BSNavigationEvent {
 }
 
 class BSNavigationLocationSelected extends BSNavigationEvent {
-  final String address;
-  final LatLng coordinates;
-  final LocationModel locationModel;
+  final String? address;
+  final LatLng? coordinates;
+  final LocationModel? locationModel;
 
   const BSNavigationLocationSelected(
       {this.address, this.coordinates, this.locationModel});
@@ -23,8 +23,8 @@ class BSNavigationCanceled extends BSNavigationEvent {
 }
 
 class BSNavigationLocationAccepted extends BSNavigationEvent {
-  final LocationModel location;
-  final bool origin;
+  final LocationModel? location;
+  final bool? origin;
   const BSNavigationLocationAccepted(this.location, {this.origin});
 }
 
@@ -51,16 +51,16 @@ class BSNavigationAdvanced extends BSNavigationEvent {
 }
 
 class BSNavigationRestrictionAdded extends BSNavigationEvent {
-  final int visitTime;
-  final int effort;
-  final int budget;
+  final int? visitTime;
+  final int? effort;
+  final int? budget;
   const BSNavigationRestrictionAdded(
       {this.visitTime, this.effort, this.budget});
 }
 
 class BSNavigationInterestAdded extends BSNavigationEvent {
-  final List<int> categories;
-  final List<PointOfInterestModel> pois;
+  final List<int>? categories;
+  final List<PointOfInterestModel>? pois;
 
   const BSNavigationInterestAdded({this.categories, this.pois});
 }
@@ -68,5 +68,5 @@ class BSNavigationInterestAdded extends BSNavigationEvent {
 class BSNavigationDepartureTimeAdded extends BSNavigationEvent {
   final int date;
 
-  const BSNavigationDepartureTimeAdded({@required this.date});
+  const BSNavigationDepartureTimeAdded({required this.date});
 }

@@ -7,10 +7,10 @@ class MapControls extends StatelessWidget {
   final bool showingPOIs;
 
   const MapControls(
-      {@required this.centerCallback,
-      @required this.poiCallback,
-      @required this.centeringUser,
-      @required this.showingPOIs});
+      {required this.centerCallback,
+      required this.poiCallback,
+      required this.centeringUser,
+      required this.showingPOIs});
 
   @override
   Widget build(BuildContext context) {

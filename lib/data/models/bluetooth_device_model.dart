@@ -2,10 +2,10 @@ import 'package:latlong2/latlong.dart';
 import 'package:living_city/core/latlng_json_helper.dart';
 
 class BluetoothDeviceModel {
-  int id;
+  int? id;
 
   final LatLng coordinates;
-  final int timestamp;
+  final int? timestamp;
 
   BluetoothDeviceModel(this.coordinates, this.timestamp);
 

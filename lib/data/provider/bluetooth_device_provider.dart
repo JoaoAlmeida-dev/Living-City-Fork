@@ -7,9 +7,9 @@ class BluetoothDeviceProvider {
 
   final _devicesStore = intMapStoreFactory.store(BLUETOOTH_DEVICES_STORE_NAME);
 
-  final BLEDeviceDatabase _deviceDatabase;
+  final BLEDeviceDatabase? _deviceDatabase;
 
-  Future<Database> get _db async => await _deviceDatabase.database;
+  Future<Database> get _db async => await _deviceDatabase!.database;
 
   BluetoothDeviceProvider(this._deviceDatabase);
 
@@ -37,7 +37,7 @@ class BluetoothDeviceProvider {
     }).toList();
   }
 
-  Future<BluetoothDeviceModel> getMostRecent() async {
+  Future<BluetoothDeviceModel?> getMostRecent() async {
     int count = await _devicesStore.count(await _db);
     final record = await _devicesStore.record(count).getSnapshot(await _db);
     if (record != null) {

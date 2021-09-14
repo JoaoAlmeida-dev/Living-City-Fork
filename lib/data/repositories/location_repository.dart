@@ -6,42 +6,42 @@ import 'package:living_city/data/provider/search_history_provider.dart';
 import '../provider/location_provider.dart';
 
 class LocationRepository {
-  final LocationProvider _geolocatorProvider;
-  final SearchHistoryProvider _searchHistoryProvider;
+  final LocationProvider? _geolocatorProvider;
+  final SearchHistoryProvider? _searchHistoryProvider;
 
   const LocationRepository(
       this._geolocatorProvider, this._searchHistoryProvider);
 
   Future<List<LocationModel>> getSearchHistory() async {
-    return await _searchHistoryProvider.getSearches();
+    return await _searchHistoryProvider!.getSearches();
   }
 
   Future<void> saveLocation(LocationModel location) async {
-    return await _searchHistoryProvider.insertSearch(location);
+    return await _searchHistoryProvider!.insertSearch(location);
   }
 
   Future<LocationModel> getLocationFromCoordinates(LatLng coordinates) async {
     //fake location for now
-    return await _geolocatorProvider.getPlacemarkFromCoordinates(coordinates);
+    return await _geolocatorProvider!.getPlacemarkFromCoordinates(coordinates);
   }
 
   Future<LocationModel> getLocationFromAddress(String address) async {
-    return await _geolocatorProvider.getPlacemarkFromAdress(address);
+    return await _geolocatorProvider!.getPlacemarkFromAdress(address);
   }
 
   Future<LocationModel> getCurrentLocation() async {
-    LatLng coordinates = await _geolocatorProvider.getCurrentPosition();
+    LatLng coordinates = await _geolocatorProvider!.getCurrentPosition();
     LocationModel location =
-        await _geolocatorProvider.getPlacemarkFromCoordinates(coordinates);
+        await _geolocatorProvider!.getPlacemarkFromCoordinates(coordinates);
     return location;
   }
 
   Future<LocationStatus> getLocationStatus() async {
-    return await _geolocatorProvider.getLocationStatus();
+    return await _geolocatorProvider!.getLocationStatus();
   }
 
   Stream<Position> getPositionStream() {
-    return _geolocatorProvider.getPositionStream();
+    return _geolocatorProvider!.getPositionStream();
   }
 
   // Future<> requestLocationPermission() async {

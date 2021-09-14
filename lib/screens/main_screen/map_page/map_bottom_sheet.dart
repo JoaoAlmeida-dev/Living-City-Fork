@@ -22,17 +22,17 @@ class MapBottomSheet extends StatefulWidget {
 
 class _MapBottomSheetState extends State<MapBottomSheet> {
   final PanelController _panelController = PanelController();
-  bool _draggable;
-  bool _backdrop;
+  late bool _draggable;
+  late bool _backdrop;
 
-  bool _wasRestrictions; //Bug fix for keyboard issue on restrictions panel
+  late bool _wasRestrictions; //Bug fix for keyboard issue on restrictions panel
   // double _panelHeightFactor;
 
-  Widget _panelWidget;
+  Widget? _panelWidget;
 
-  ScrollController _scrollController;
+  ScrollController? _scrollController;
 
-  double heightLimit;
+  double? heightLimit;
   double _minHeight = 88;
 
   @override
@@ -98,11 +98,11 @@ class _MapBottomSheetState extends State<MapBottomSheet> {
                 _draggable = false;
                 _backdrop = false;
                 _panelController.animatePanelToPosition(
-                    (90.0 / heightLimit).toDouble(),
+                    (90.0 / heightLimit!).toDouble(),
                     duration: Duration(milliseconds: 300),
                     curve: Curves.easeInCubic);
               });
-              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+              WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
                 setState(() {
                   _panelWidget = LocationPanel(
                       key: ValueKey(state.address ??
@@ -118,11 +118,11 @@ class _MapBottomSheetState extends State<MapBottomSheet> {
                 _draggable = false;
                 _backdrop = false;
                 _panelController.animatePanelToPosition(
-                    (302.0 / heightLimit).toDouble(),
+                    (302.0 / heightLimit!).toDouble(),
                     duration: Duration(milliseconds: 200),
                     curve: Curves.easeInCubic);
               });
-              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+              WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
                 setState(() {
                   _panelWidget = PlanPointsPanel(
                       origin: state.origin,
@@ -144,20 +144,20 @@ class _MapBottomSheetState extends State<MapBottomSheet> {
                 );
                 if (!_wasRestrictions)
                   _panelController.animatePanelToPosition(
-                      (352.0 / heightLimit).toDouble(),
+                      (352.0 / heightLimit!).toDouble(),
                       duration: Duration(milliseconds: 200),
                       curve: Curves.easeInCubic);
               });
             } else if (state is BSNavigationPlanningInterests) {
               setState(() {
                 _panelWidget = PlanInterestsPanel(
-                  activeCategories: List.from(state.categories),
-                  activePOIs: List.from(state.pois),
+                  activeCategories: List.from(state.categories!),
+                  activePOIs: List.from(state.pois!),
                   date: state.departureHour,
                   origin: state.origin,
                 );
                 _panelController.animatePanelToPosition(
-                    (564 / heightLimit).toDouble(),
+                    (564 / heightLimit!).toDouble(),
                     duration: Duration(milliseconds: 200),
                     curve: Curves.easeInCubic);
               });
@@ -189,7 +189,7 @@ class _MapBottomSheetState extends State<MapBottomSheet> {
           heightLimit =
               constraints.maxHeight - MediaQuery.of(context).padding.top - 16;
           return SlidingUpPanel(
-            maxHeight: heightLimit /** _panelHeightFactor*/,
+            maxHeight: heightLimit! /** _panelHeightFactor*/,
             minHeight: _minHeight,
             color: Colors.white,
             backdropEnabled: _backdrop,
@@ -258,10 +258,10 @@ class _MapBottomSheetState extends State<MapBottomSheet> {
   }
 
   _initPanel() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       if (_panelController.isAttached) {
         _panelController.animatePanelToPosition(
-            (308.0 / heightLimit).toDouble(),
+            (308.0 / heightLimit!).toDouble(),
             duration: Duration(milliseconds: 300),
             curve: Curves.easeInCubic);
       } else {
@@ -293,7 +293,7 @@ class _MapBottomSheetState extends State<MapBottomSheet> {
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    _scrollController!.dispose();
     super.dispose();
   }
 

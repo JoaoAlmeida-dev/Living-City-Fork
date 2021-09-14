@@ -16,11 +16,11 @@ part 'bs_navigation_event.dart';
 part 'bs_navigation_state.dart';
 
 class BSNavigationBloc extends Bloc<BSNavigationEvent, BSNavigationState> {
-  final TripRepository _tripRepository;
+  final TripRepository? _tripRepository;
   final TripPlanModel _tripPlanModel;
-  final LocationRepository _locationRepository;
+  final LocationRepository? _locationRepository;
 
-  bool _originSelected;
+  bool? _originSelected;
 
   BSNavigationBloc(
     this._tripRepository,
@@ -68,7 +68,7 @@ class BSNavigationBloc extends Bloc<BSNavigationEvent, BSNavigationState> {
   }
 
   Stream<BSNavigationState> _handleLoadActiveTrip() async* {
-    final trip = await _tripRepository.getCurrentTrip();
+    final trip = await _tripRepository!.getCurrentTrip();
     if (trip != null) yield BSNavigationActiveTrip(trip);
   }
 
@@ -95,13 +95,13 @@ class BSNavigationBloc extends Bloc<BSNavigationEvent, BSNavigationState> {
       BSNavigationLocationAccepted event) async* {
     if (state is BSNavigationShowingLocation) {
       if (event.origin != null) {
-        if (event.origin)
+        if (event.origin!)
           _tripPlanModel.origin = event.location;
         else
           _tripPlanModel.destination = event.location;
       } else {
         if (_originSelected == null) _originSelected = true;
-        if (_originSelected)
+        if (_originSelected!)
           _tripPlanModel.origin = event.location;
         else
           _tripPlanModel.destination = event.location;
@@ -113,7 +113,7 @@ class BSNavigationBloc extends Bloc<BSNavigationEvent, BSNavigationState> {
         date: _tripPlanModel.departureDate,
       );
     } else if (state is BSNavigationPlanningPoints) {
-      if (event.origin)
+      if (event.origin!)
         _tripPlanModel.origin = event.location;
       else
         _tripPlanModel.destination = event.location; //should never happen
@@ -162,19 +162,19 @@ class BSNavigationBloc extends Bloc<BSNavigationEvent, BSNavigationState> {
           pois: _tripPlanModel.pois,
           origin: _tripPlanModel.origin?.coordinates,
           departureHour:
-              DateTime.fromMillisecondsSinceEpoch(_tripPlanModel.departureDate)
+              DateTime.fromMillisecondsSinceEpoch(_tripPlanModel.departureDate!)
                   .hour);
     } else if (state is BSNavigationConfirmingTrip) {
       yield BSNavigationPlanningRestrictions(
           departureDate: _tripPlanModel.departureDate,
-          minVisitTime: List<PointOfInterestModel>.from(_tripPlanModel.pois)
+          minVisitTime: List<PointOfInterestModel>.from(_tripPlanModel.pois!)
               .fold<int>(0,
-                  (previousValue, element) => previousValue + element.visitTime)
+                  (previousValue, element) => previousValue + element.visitTime!)
               .toInt(),
           visitTime: _tripPlanModel.visitTime,
-          minBudget: List<PointOfInterestModel>.from(_tripPlanModel.pois)
+          minBudget: List<PointOfInterestModel>.from(_tripPlanModel.pois!)
               .fold<double>(0.0,
-                  (previousValue, element) => previousValue + element.price)
+                  (previousValue, element) => previousValue + element.price!)
               .toInt(),
           budget: _tripPlanModel.budget,
           // date: _tripPlanModel.date,
@@ -193,7 +193,7 @@ class BSNavigationBloc extends Bloc<BSNavigationEvent, BSNavigationState> {
   Stream<BSNavigationState> _handleAdvanced() async* {
     if (state is BSNavigationPlanningPoints) {
       if (_tripPlanModel.departureDate == null ||
-          _tripPlanModel.departureDate <
+          _tripPlanModel.departureDate! <
               DateTime.now().millisecondsSinceEpoch) {
         _tripPlanModel.departureDate = DateTime.now().millisecondsSinceEpoch;
       }
@@ -205,7 +205,7 @@ class BSNavigationBloc extends Bloc<BSNavigationEvent, BSNavigationState> {
           pois: _tripPlanModel.pois,
           origin: _tripPlanModel.origin?.coordinates,
           departureHour:
-              DateTime.fromMillisecondsSinceEpoch(_tripPlanModel.departureDate)
+              DateTime.fromMillisecondsSinceEpoch(_tripPlanModel.departureDate!)
                   .hour);
     } else {
       if (state is BSNavigationPlanningInterests) {
@@ -213,16 +213,16 @@ class BSNavigationBloc extends Bloc<BSNavigationEvent, BSNavigationState> {
         // _tripPlanModel.date = DateTime.now().millisecondsSinceEpoch;
         yield BSNavigationPlanningRestrictions(
             departureDate: _tripPlanModel.departureDate,
-            minVisitTime: List<PointOfInterestModel>.from(_tripPlanModel.pois)
+            minVisitTime: List<PointOfInterestModel>.from(_tripPlanModel.pois!)
                 .fold<int>(
                     0,
                     (previousValue, element) =>
-                        previousValue + element.visitTime)
+                        previousValue + element.visitTime!)
                 .toInt(),
             visitTime: _tripPlanModel.visitTime,
-            minBudget: List<PointOfInterestModel>.from(_tripPlanModel.pois)
+            minBudget: List<PointOfInterestModel>.from(_tripPlanModel.pois!)
                 .fold<double>(0.0,
-                    (previousValue, element) => previousValue + element.price)
+                    (previousValue, element) => previousValue + element.price!)
                 .toInt(),
             budget: _tripPlanModel.budget,
             // date: _tripPlanModel.date,
@@ -231,19 +231,19 @@ class BSNavigationBloc extends Bloc<BSNavigationEvent, BSNavigationState> {
         if (state is BSNavigationPlanningRestrictions) {
           if (_tripPlanModel.budget == null)
             _tripPlanModel.budget =
-                List<PointOfInterestModel>.from(_tripPlanModel.pois)
+                List<PointOfInterestModel>.from(_tripPlanModel.pois!)
                     .fold<double>(
                         0.0,
                         (previousValue, element) =>
-                            previousValue + element.price)
+                            previousValue + element.price!)
                     .toInt();
           if (_tripPlanModel.visitTime == null)
             _tripPlanModel.visitTime =
-                List<PointOfInterestModel>.from(_tripPlanModel.pois)
+                List<PointOfInterestModel>.from(_tripPlanModel.pois!)
                     .fold<int>(
                         0,
                         (previousValue, element) =>
-                            previousValue + element.visitTime)
+                            previousValue + element.visitTime!)
                     .toInt();
           yield BSNavigationConfirmingTrip(_tripPlanModel);
         }
@@ -259,14 +259,14 @@ class BSNavigationBloc extends Bloc<BSNavigationEvent, BSNavigationState> {
       if (event.effort != null) _tripPlanModel.effort = event.effort;
       yield BSNavigationPlanningRestrictions(
           departureDate: _tripPlanModel.departureDate,
-          minVisitTime: List<PointOfInterestModel>.from(_tripPlanModel.pois)
+          minVisitTime: List<PointOfInterestModel>.from(_tripPlanModel.pois!)
               .fold<int>(0,
-                  (previousValue, element) => previousValue + element.visitTime)
+                  (previousValue, element) => previousValue + element.visitTime!)
               .toInt(),
           visitTime: _tripPlanModel.visitTime,
-          minBudget: List<PointOfInterestModel>.from(_tripPlanModel.pois)
+          minBudget: List<PointOfInterestModel>.from(_tripPlanModel.pois!)
               .fold<double>(0.0,
-                  (previousValue, element) => previousValue + element.price)
+                  (previousValue, element) => previousValue + element.price!)
               .toInt(),
           budget: _tripPlanModel.budget,
           // date: _tripPlanModel.date,
@@ -285,7 +285,7 @@ class BSNavigationBloc extends Bloc<BSNavigationEvent, BSNavigationState> {
           pois: _tripPlanModel.pois,
           origin: _tripPlanModel.origin?.coordinates,
           departureHour:
-              DateTime.fromMillisecondsSinceEpoch(_tripPlanModel.departureDate)
+              DateTime.fromMillisecondsSinceEpoch(_tripPlanModel.departureDate!)
                   .hour);
     }
   }
@@ -301,7 +301,7 @@ class BSNavigationBloc extends Bloc<BSNavigationEvent, BSNavigationState> {
 
   _checkLocation() async {
     try {
-      LocationModel location = await _locationRepository.getCurrentLocation();
+      LocationModel location = await _locationRepository!.getCurrentLocation();
       if (state is BSNavigationPlanningPoints &&
           _tripPlanModel.origin == null) {
         // _tripPlanModel.origin = location;

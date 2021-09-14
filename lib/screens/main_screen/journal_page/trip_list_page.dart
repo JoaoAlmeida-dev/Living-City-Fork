@@ -80,11 +80,11 @@ class StatsDisplay extends StatelessWidget {
   final double avgSustainability;
 
   const StatsDisplay(
-      {Key key,
-      @required this.sumCalories,
-      @required this.sumPOIsVisited,
-      @required this.sumDistance,
-      @required this.avgSustainability})
+      {Key? key,
+      required this.sumCalories,
+      required this.sumPOIsVisited,
+      required this.sumDistance,
+      required this.avgSustainability})
       : super(key: key);
 
   @override
@@ -125,7 +125,7 @@ class StatsItem extends StatelessWidget {
   final String value;
   final String name;
 
-  const StatsItem({Key key, @required this.value, @required this.name})
+  const StatsItem({Key? key, required this.value, required this.name})
       : super(key: key);
 
   @override
@@ -163,8 +163,8 @@ class StatsItem extends StatelessWidget {
 }
 
 class ActiveTrip extends StatelessWidget {
-  final ProgressionTripModel trip;
-  const ActiveTrip({@required this.trip});
+  final ProgressionTripModel? trip;
+  const ActiveTrip({required this.trip});
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +206,7 @@ class ActiveTrip extends StatelessWidget {
                         children: <Widget>[
                           const Text('Next',
                               style: TextStyle(color: Colors.grey)),
-                          Text(trip.originalTrip.pois[1].poi.name,
+                          Text(trip!.originalTrip.pois[1].poi.name!,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -221,7 +221,7 @@ class ActiveTrip extends StatelessWidget {
                                   Text('Price',
                                       style: TextStyle(color: Colors.grey)),
                                   Text(
-                                      '${trip.originalTrip.pois[1].poi.price} €',
+                                      '${trip!.originalTrip.pois[1].poi.price} €',
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
@@ -237,7 +237,7 @@ class ActiveTrip extends StatelessWidget {
                                   Text('Duration',
                                       style: TextStyle(color: Colors.grey)),
                                   Text(
-                                      '${trip.originalTrip.pois[1].poi.visitTime} Minutes',
+                                      '${trip!.originalTrip.pois[1].poi.visitTime} Minutes',
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
@@ -254,11 +254,11 @@ class ActiveTrip extends StatelessWidget {
                   Expanded(
                     flex: 4,
                     child: LineAndMarkersMap(
-                      markers: trip.originalTrip.pois
+                      markers: trip!.originalTrip.pois
                           .map((e) => e.poi.coordinates)
                           .toList(),
-                      line: trip.originalTrip.line,
-                      target: trip.originalTrip.pois[1].poi.coordinates,
+                      line: trip!.originalTrip.line,
+                      target: trip!.originalTrip.pois[1].poi.coordinates,
                       padding: 18,
                       backgroundColor: Colors.white,
                     ),
@@ -278,7 +278,7 @@ class TripList extends StatefulWidget {
   final List<ProgressionTripModel> completedList;
 
   const TripList(
-      {Key key, @required this.plannedList, @required this.completedList})
+      {Key? key, required this.plannedList, required this.completedList})
       : super(key: key);
 
   @override
@@ -286,12 +286,12 @@ class TripList extends StatefulWidget {
 }
 
 class _TripListState extends State<TripList> {
-  int _selection;
+  int? _selection;
 
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  ListModel<TripModel> _list;
-  int _initialCount;
-  bool _isEmpty;
+  late ListModel<TripModel> _list;
+  late int _initialCount;
+  late bool _isEmpty;
 
   @override
   void initState() {
@@ -424,7 +424,7 @@ class _TripListState extends State<TripList> {
         setState(() {
           var trips = List.from(widget.completedList);
           _isEmpty = trips.isEmpty;
-          for (ProgressionTripModel trip in trips) {
+          for (ProgressionTripModel trip in trips as Iterable<ProgressionTripModel>) {
             _list.insert(_list.length, trip.originalTrip);
           }
         });
@@ -432,7 +432,7 @@ class _TripListState extends State<TripList> {
         setState(() {
           var trips = List.from(widget.plannedList);
           _isEmpty = trips.isEmpty;
-          for (TripModel trip in trips) {
+          for (TripModel trip in trips as Iterable<TripModel>) {
             _list.insert(_list.length, trip);
           }
         });
@@ -454,21 +454,21 @@ class _TripListState extends State<TripList> {
 
 class TripListTab extends StatefulWidget {
   final List<String> strings;
-  final int selected;
+  final int? selected;
   final ValueChanged<int> onTap;
 
   const TripListTab(
-      {Key key,
-      @required this.selected,
-      @required this.onTap,
-      @required this.strings})
+      {Key? key,
+      required this.selected,
+      required this.onTap,
+      required this.strings})
       : super(key: key);
   @override
   _TripListTabState createState() => _TripListTabState();
 }
 
 class _TripListTabState extends State<TripListTab> {
-  List<GlobalKey> keys;
+  late List<GlobalKey> keys;
   bool _ready = false;
 
   @override
@@ -476,7 +476,7 @@ class _TripListTabState extends State<TripListTab> {
     super.initState();
     keys = List.generate(widget.strings.length, (_) => GlobalKey(),
         growable: false);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       if (this.mounted)
         setState(() {
           _ready = true;
@@ -533,18 +533,18 @@ class _TripListTabState extends State<TripListTab> {
 
   double _calculateWidth() {
     final RenderBox renderBox =
-        (keys[widget.selected].currentContext.findRenderObject() as RenderBox);
+        (keys[widget.selected!].currentContext!.findRenderObject() as RenderBox);
     final double originWidth = renderBox.size.width;
     return originWidth * 0.4;
   }
 
   double _calculateDistance() {
     final double originX =
-        (keys[0].currentContext.findRenderObject() as RenderBox)
+        (keys[0].currentContext!.findRenderObject() as RenderBox)
             .localToGlobal(Offset(0, 0))
             .dx;
     final RenderBox destinationRenderBox =
-        (keys[widget.selected].currentContext.findRenderObject() as RenderBox);
+        (keys[widget.selected!].currentContext!.findRenderObject() as RenderBox);
     final double destinationX =
         destinationRenderBox.localToGlobal(Offset(0, 0)).dx;
     final double differenceX = destinationX - originX;
@@ -555,9 +555,9 @@ class _TripListTabState extends State<TripListTab> {
 
 class TripListItem extends StatelessWidget {
   const TripListItem({
-    Key key,
-    @required this.animation,
-    @required this.item,
+    Key? key,
+    required this.animation,
+    required this.item,
   })  : assert(animation != null),
         assert(item != null),
         super(key: key);
@@ -567,9 +567,9 @@ class TripListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int leafCount = trip.sustainability >= 80
+    int leafCount = trip.sustainability! >= 80
         ? 3
-        : trip.sustainability >= 70 ? 2 : trip.sustainability >= 60 ? 1 : 0;
+        : trip.sustainability! >= 70 ? 2 : trip.sustainability! >= 60 ? 1 : 0;
     return FadeTransition(
       opacity: animation,
       child: Container(
@@ -599,7 +599,7 @@ class TripListItem extends StatelessWidget {
                       Text(
                           _formatMonthAndDay(
                               DateTime.fromMillisecondsSinceEpoch(
-                                  trip.startTime)),
+                                  trip.startTime!)),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -607,7 +607,7 @@ class TripListItem extends StatelessWidget {
                       const SizedBox(width: 8),
                       Text(
                           _formatHour(DateTime.fromMillisecondsSinceEpoch(
-                              trip.startTime)),
+                              trip.startTime!)),
                           style: TextStyle(color: Colors.grey, fontSize: 13)),
                     ],
                   ),
@@ -664,7 +664,7 @@ class TripListItem extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(trip.pois[0].poi.name,
+                          Text(trip.pois[0].poi.name!,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(fontWeight: FontWeight.w600)),
@@ -675,7 +675,7 @@ class TripListItem extends StatelessWidget {
                                   ' Attractions',
                               style: TextStyle(color: Colors.grey)),
                           const SizedBox(height: 12),
-                          Text(trip.pois.last.poi.name,
+                          Text(trip.pois.last.poi.name!,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(fontWeight: FontWeight.w600)),

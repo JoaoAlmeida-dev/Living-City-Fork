@@ -1,8 +1,8 @@
 import 'package:latlong2/latlong.dart';
 
 class LocationModel {
-  String name;
-  String locality;
+  String? name;
+  String? locality;
   LatLng coordinates;
   bool get hasCoordinates {
     return coordinates != null;

@@ -21,7 +21,7 @@ void main() {
   di.init(); //dependencies injection
 
   group('BSNavigationBloc', () {
-    BSNavigationBloc _bsNavigationBloc;
+    late BSNavigationBloc _bsNavigationBloc;
 
     setUp(() {
       _bsNavigationBloc = BSNavigationBloc(di.sl(), di.sl());
@@ -39,14 +39,14 @@ void main() {
         ..add(BSNavigationLocationSelected(coordinates: LatLng(1, 2)))
         ..add(BSNavigationLocationAccepted(LocationModel(LatLng(1, 2)),
             origin: true)),
-      expect: [
+      expect: () => [
         isA<BSNavigationSelectingLocation>(),
         isA<BSNavigationShowingLocation>(),
         isA<BSNavigationPlanningPoints>(),
       ],
       verify: (cubit) {
         final LocationModel origin =
-            (cubit.state as BSNavigationPlanningPoints).origin;
+            (cubit.state as BSNavigationPlanningPoints).origin!;
         expect(origin.coordinates.latitude, 1);
         expect(origin.coordinates.longitude, 2);
       },
@@ -60,14 +60,14 @@ void main() {
         ..add(BSNavigationLocationSelected(coordinates: LatLng(1, 2)))
         ..add(BSNavigationLocationAccepted(LocationModel(LatLng(1, 2)),
             origin: true)),
-      expect: [
+      expect: () => [
         isA<BSNavigationSelectingLocation>(),
         isA<BSNavigationShowingLocation>(),
         isA<BSNavigationPlanningPoints>(),
       ],
       verify: (cubit) {
         final LocationModel origin =
-            (cubit.state as BSNavigationPlanningPoints).origin;
+            (cubit.state as BSNavigationPlanningPoints).origin!;
         expect(origin.coordinates.latitude, 1);
         expect(origin.coordinates.longitude, 2);
       },
@@ -77,7 +77,7 @@ void main() {
       'Test advancing from the Start Trip panel to the Interests panel',
       build: () => _bsNavigationBloc,
       act: (cubit) => cubit..add(BSNavigationAdvanced()),
-      expect: [
+      expect: () => [
         isA<BSNavigationPlanningInterests>(),
       ],
     );
@@ -89,7 +89,7 @@ void main() {
         ..add(BSNavigationAdvanced())
         ..add(BSNavigationCanceled()),
       skip: 1,
-      expect: [
+      expect: () => [
         isA<BSNavigationPlanningPoints>(),
       ],
     );
@@ -102,12 +102,12 @@ void main() {
         ..add(BSNavigationInterestAdded(
             pois: [example.pois[0], example.pois[1]])),
       skip: 1,
-      expect: [
+      expect: () => [
         isA<BSNavigationPlanningInterests>(),
       ],
       verify: (cubit) {
         final state = (cubit.state as BSNavigationPlanningInterests);
-        expect(state.pois.elementAt(0).id, example.pois[0].id);
+        expect(state.pois!.elementAt(0).id, example.pois[0].id);
       },
     );
 
@@ -121,9 +121,9 @@ void main() {
       verify: (cubit) {
         final state = (cubit.state as BSNavigationPlanningInterests);
         expect(
-            List<PointOfInterestModel>.from(state.pois).fold<double>(
-                0.0, (previousValue, element) => previousValue + element.price),
-            example.pois[0].price + example.pois[1].price);
+            List<PointOfInterestModel>.from(state.pois!).fold<double>(
+                0.0, (previousValue, element) => previousValue + element.price!),
+            example.pois[0].price! + example.pois[1].price!);
       },
     );
 
@@ -137,12 +137,12 @@ void main() {
       verify: (cubit) {
         final state = (cubit.state as BSNavigationPlanningInterests);
         expect(
-            List<PointOfInterestModel>.from(state.pois).fold<double>(
+            List<PointOfInterestModel>.from(state.pois!).fold<double>(
                     0.0,
                     (previousValue, element) =>
-                        previousValue + element.sustainability) /
+                        previousValue + element.sustainability!) /
                 2,
-            (example.pois[0].sustainability + example.pois[1].sustainability) /
+            (example.pois[0].sustainability! + example.pois[1].sustainability!) /
                 2);
       },
     );
@@ -156,9 +156,9 @@ void main() {
       verify: (cubit) {
         final state = (cubit.state as BSNavigationPlanningInterests);
         expect(
-            List<PointOfInterestModel>.from(state.pois).fold(0,
-                (previousValue, element) => previousValue + element.visitTime),
-            example.pois[0].visitTime + example.pois[1].visitTime);
+            List<PointOfInterestModel>.from(state.pois!).fold(0,
+                (dynamic previousValue, element) => previousValue + element.visitTime),
+            example.pois[0].visitTime! + example.pois[1].visitTime!);
       },
     );
 
@@ -169,7 +169,7 @@ void main() {
         ..add(BSNavigationAdvanced())
         ..add(BSNavigationAdvanced()),
       skip: 1,
-      expect: [
+      expect: () => [
         isA<BSNavigationPlanningRestrictions>(),
       ],
     );
@@ -182,7 +182,7 @@ void main() {
         ..add(BSNavigationAdvanced())
         ..add(BSNavigationCanceled()),
       skip: 2,
-      expect: [
+      expect: () => [
         isA<BSNavigationPlanningInterests>(),
       ],
     );
@@ -195,7 +195,7 @@ void main() {
         ..add(BSNavigationAdvanced())
         ..add(BSNavigationRestrictionAdded(budget: 100)),
       skip: 2,
-      expect: [
+      expect: () => [
         isA<BSNavigationPlanningRestrictions>(),
       ],
       verify: (cubit) {
@@ -211,7 +211,7 @@ void main() {
         ..add(BSNavigationAdvanced())
         ..add(BSNavigationRestrictionAdded(visitTime: 360)),
       skip: 2,
-      expect: [
+      expect: () => [
         isA<BSNavigationPlanningRestrictions>(),
       ],
       verify: (cubit) {
@@ -228,7 +228,7 @@ void main() {
         ..add(BSNavigationAdvanced())
         ..add(BSNavigationRestrictionAdded(effort: 2)),
       skip: 2,
-      expect: [
+      expect: () => [
         isA<BSNavigationPlanningRestrictions>(),
       ],
       verify: (cubit) {
@@ -267,21 +267,21 @@ void main() {
         final state = cubit.state as BSNavigationConfirmingTrip;
 
         //Test origin
-        expect(state.tripPlanModel.origin.name, 'Rua Alexandre Ferreira');
-        expect(state.tripPlanModel.origin.coordinates.latitude, 38.7139092);
-        expect(state.tripPlanModel.origin.coordinates.longitude, -9.1334762);
+        expect(state.tripPlanModel.origin!.name, 'Rua Alexandre Ferreira');
+        expect(state.tripPlanModel.origin!.coordinates.latitude, 38.7139092);
+        expect(state.tripPlanModel.origin!.coordinates.longitude, -9.1334762);
 
         //Test destination
         expect(
-            state.tripPlanModel.destination.name, 'Avenida das Forças Armadas');
-        expect(state.tripPlanModel.destination.coordinates.latitude,
+            state.tripPlanModel.destination!.name, 'Avenida das Forças Armadas');
+        expect(state.tripPlanModel.destination!.coordinates.latitude,
             38.70861933474137);
-        expect(state.tripPlanModel.destination.coordinates.longitude,
+        expect(state.tripPlanModel.destination!.coordinates.longitude,
             -9.140110592695562);
 
         //Test interest POIs
-        expect(state.tripPlanModel.pois[0].id, example.pois[0].id);
-        expect(state.tripPlanModel.pois[1].id, example.pois[1].id);
+        expect(state.tripPlanModel.pois![0].id, example.pois[0].id);
+        expect(state.tripPlanModel.pois![1].id, example.pois[1].id);
 
         //Test budged
         expect(state.tripPlanModel.budget, 100);
@@ -323,16 +323,16 @@ void main() {
         final state = cubit.state as BSNavigationConfirmingTrip;
 
         //Test origin
-        expect(state.tripPlanModel.origin.name, 'Rua Alexandre Ferreira');
-        expect(state.tripPlanModel.origin.coordinates.latitude, 38.7139092);
-        expect(state.tripPlanModel.origin.coordinates.longitude, -9.1334762);
+        expect(state.tripPlanModel.origin!.name, 'Rua Alexandre Ferreira');
+        expect(state.tripPlanModel.origin!.coordinates.latitude, 38.7139092);
+        expect(state.tripPlanModel.origin!.coordinates.longitude, -9.1334762);
 
         //Test destination
-        expect(state.tripPlanModel.destination.name, 'Rua Alexandre Ferreira');
+        expect(state.tripPlanModel.destination!.name, 'Rua Alexandre Ferreira');
         expect(
-            state.tripPlanModel.destination.coordinates.latitude, 38.7139092);
+            state.tripPlanModel.destination!.coordinates.latitude, 38.7139092);
         expect(
-            state.tripPlanModel.destination.coordinates.longitude, -9.1334762);
+            state.tripPlanModel.destination!.coordinates.longitude, -9.1334762);
 
         //Test interest POIs
         expect(state.tripPlanModel.pois, isEmpty);
@@ -375,20 +375,20 @@ void main() {
         final state = cubit.state as BSNavigationConfirmingTrip;
 
         //Test origin
-        expect(state.tripPlanModel.origin.name, 'Rua Alexandre Ferreira');
-        expect(state.tripPlanModel.origin.coordinates.latitude, 38.7139092);
-        expect(state.tripPlanModel.origin.coordinates.longitude, -9.1334762);
+        expect(state.tripPlanModel.origin!.name, 'Rua Alexandre Ferreira');
+        expect(state.tripPlanModel.origin!.coordinates.latitude, 38.7139092);
+        expect(state.tripPlanModel.origin!.coordinates.longitude, -9.1334762);
 
         //Test destination
         expect(
-            state.tripPlanModel.destination.name, 'Avenida das Forças Armadas');
-        expect(state.tripPlanModel.destination.coordinates.latitude,
+            state.tripPlanModel.destination!.name, 'Avenida das Forças Armadas');
+        expect(state.tripPlanModel.destination!.coordinates.latitude,
             38.70861933474137);
-        expect(state.tripPlanModel.destination.coordinates.longitude,
+        expect(state.tripPlanModel.destination!.coordinates.longitude,
             -9.140110592695562);
 
         //Test interest POIs
-        expect(state.tripPlanModel.pois[0].id, example.pois[0].id);
+        expect(state.tripPlanModel.pois![0].id, example.pois[0].id);
 
         //Test budged
         expect(state.tripPlanModel.budget, example.pois[0].price);
@@ -412,7 +412,7 @@ void main() {
       act: (cubit) {
         cubit..add(SendRouteRequest(TripPlanModel()));
       },
-      expect: [isA<RouteRequestLoading>(), isA<RouteRequestLoaded>()],
+      expect: () => [isA<RouteRequestLoading>(), isA<RouteRequestLoaded>()],
       verify: (cubit) {
         final state = cubit.state as RouteRequestLoaded;
         expect(state.tripModel, isA<TripModel>());
@@ -430,7 +430,7 @@ void main() {
       act: (cubit) {
         cubit..add(SendRouteRequest(TripPlanModel()));
       },
-      expect: [isA<RouteRequestLoading>(), isA<RouteRequestTripError>()],
+      expect: () => [isA<RouteRequestLoading>(), isA<RouteRequestTripError>()],
     );
 
     blocTest<RouteRequestBloc, RouteRequestState>(
@@ -443,7 +443,8 @@ void main() {
       act: (cubit) {
         cubit..add(SendRouteRequest(TripPlanModel()));
       },
-      expect: [isA<RouteRequestLoading>(), isA<RouteRequestConnectionError>()],
+      expect: () =>
+          [isA<RouteRequestLoading>(), isA<RouteRequestConnectionError>()],
     );
   });
 }

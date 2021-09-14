@@ -8,12 +8,12 @@ import '../../../../bloc/location/location_bloc.dart';
 import '../../../../data/models/location_model.dart';
 
 class LocationPanel extends StatefulWidget {
-  final String address;
-  final LatLng coordinates;
-  final LocationModel locationModel;
+  final String? address;
+  final LatLng? coordinates;
+  final LocationModel? locationModel;
 
   const LocationPanel({
-    Key key,
+    Key? key,
     this.address,
     this.coordinates,
     this.locationModel,
@@ -24,8 +24,8 @@ class LocationPanel extends StatefulWidget {
 }
 
 class _LocationPanelState extends State<LocationPanel> {
-  LocationModel location;
-  bool origin;
+  LocationModel? location;
+  bool? origin;
 
   @override
   void initState() {
@@ -62,7 +62,7 @@ class _LocationPanelState extends State<LocationPanel> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(origin ? 'Origin' : 'Destination'),
+                Text(origin! ? 'Origin' : 'Destination'),
                 const SizedBox(height: 4),
                 BlocBuilder<LocationBloc, LocationState>(
                   builder: (context, state) {
@@ -70,8 +70,8 @@ class _LocationPanelState extends State<LocationPanel> {
                       return Padding(
                         padding: const EdgeInsets.only(right: 64.0),
                         child: Shimmer.fromColors(
-                          baseColor: Colors.grey[100],
-                          highlightColor: Colors.grey[50],
+                          baseColor: Colors.grey[100]!,
+                          highlightColor: Colors.grey[50]!,
                           child: Container(
                             decoration: BoxDecoration(
                                 color: Colors.white,
@@ -86,7 +86,7 @@ class _LocationPanelState extends State<LocationPanel> {
                     } else {
                       location = (state as LocationLoaded).location;
                       return Text(
-                        location.name,
+                        location!.name!,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(

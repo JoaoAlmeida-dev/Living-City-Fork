@@ -3,16 +3,16 @@ import 'package:latlong2/latlong.dart';
 import '../../core/latlng_json_helper.dart';
 
 class PointOfInterestModel {
-  int id; //database
+  int? id; //database
 
-  final int pointID;
-  final int categoryID;
-  final String name;
-  final int visitTime;
-  final int openingHour;
-  final int closureHour;
-  final double price;
-  final int sustainability;
+  final int? pointID;
+  final int? categoryID;
+  final String? name;
+  final int? visitTime;
+  final int? openingHour;
+  final int? closureHour;
+  final double? price;
+  final int? sustainability;
   final LatLng coordinates;
 
   PointOfInterestModel(
@@ -57,7 +57,7 @@ class PointOfInterestModel {
 
 class TimedPointOfInterestModel {
   final PointOfInterestModel poi;
-  final int timestamp;
+  final int? timestamp;
 
   const TimedPointOfInterestModel(this.poi, this.timestamp);
 

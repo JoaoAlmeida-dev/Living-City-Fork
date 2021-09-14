@@ -10,18 +10,18 @@ class BSNavigationExplore extends BSNavigationState {
 }
 
 class BSNavigationShowingLocation extends BSNavigationState {
-  final String address;
-  final LatLng coordinates;
-  final LocationModel locationModel;
-  final bool origin;
+  final String? address;
+  final LatLng? coordinates;
+  final LocationModel? locationModel;
+  final bool? origin;
   const BSNavigationShowingLocation(
       {this.address, this.coordinates, this.locationModel, this.origin});
 }
 
 class BSNavigationPlanningPoints extends BSNavigationState {
-  final LocationModel origin;
-  final LocationModel destination;
-  final int date;
+  final LocationModel? origin;
+  final LocationModel? destination;
+  final int? date;
   const BSNavigationPlanningPoints({
     this.origin,
     this.destination,
@@ -30,38 +30,38 @@ class BSNavigationPlanningPoints extends BSNavigationState {
 }
 
 class BSNavigationSelectingLocation extends BSNavigationState {
-  final bool isOrigin;
+  final bool? isOrigin;
 
   const BSNavigationSelectingLocation(this.isOrigin);
 }
 
 class BSNavigationPlanningRestrictions extends BSNavigationState {
   final int minVisitTime;
-  final int visitTime;
-  final int departureDate;
-  final int effort;
-  final int budget;
-  final int minBudget;
+  final int? visitTime;
+  final int? departureDate;
+  final int? effort;
+  final int? budget;
+  final int? minBudget;
   const BSNavigationPlanningRestrictions(
-      {@required this.minVisitTime,
-      @required this.visitTime,
-      @required this.departureDate,
+      {required this.minVisitTime,
+      required this.visitTime,
+      required this.departureDate,
       this.minBudget,
       this.effort,
       this.budget});
 }
 
 class BSNavigationPlanningInterests extends BSNavigationState {
-  final List<int> categories;
-  final List<PointOfInterestModel> pois;
+  final List<int>? categories;
+  final List<PointOfInterestModel>? pois;
   final int departureHour;
-  final LatLng origin;
+  final LatLng? origin;
 
   const BSNavigationPlanningInterests(
       {this.categories,
       this.pois,
-      @required this.departureHour,
-      @required this.origin});
+      required this.departureHour,
+      required this.origin});
 }
 
 class BSNavigationConfirmingTrip extends BSNavigationState {

@@ -10,8 +10,8 @@ class LineMap extends StatelessWidget {
   final double padding;
 
   const LineMap({
-    Key key,
-    @required this.line,
+    Key? key,
+    required this.line,
     this.backgroundColor = const Color(0xffFCFBE7),
     this.padding = 16,
   }) : super(key: key);
@@ -47,10 +47,10 @@ class LineAndMarkersMap extends StatelessWidget {
   final double padding;
 
   const LineAndMarkersMap({
-    Key key,
-    @required this.line,
-    @required this.markers,
-    @required this.target,
+    Key? key,
+    required this.line,
+    required this.markers,
+    required this.target,
     this.backgroundColor = const Color(0xffFCFBE7),
     this.padding = 18,
   }) : super(key: key);

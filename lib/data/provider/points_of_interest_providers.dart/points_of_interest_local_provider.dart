@@ -7,9 +7,9 @@ class PointsOfInterestLocalProvider {
   static const String COMPLETED_TRIP_STORE_NAME = 'poi';
   final _poiStore = intMapStoreFactory.store(COMPLETED_TRIP_STORE_NAME);
 
-  final PointOfInterestDatabase _poiDatabase;
+  final PointOfInterestDatabase? _poiDatabase;
 
-  Future<Database> get _db async => await _poiDatabase.database;
+  Future<Database> get _db async => await _poiDatabase!.database;
 
   PointsOfInterestLocalProvider(this._poiDatabase) {
     //_validateStores();

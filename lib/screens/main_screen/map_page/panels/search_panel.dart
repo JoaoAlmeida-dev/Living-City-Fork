@@ -11,13 +11,13 @@ class SearchPanel extends StatefulWidget {
 
   final Function() openSheet;
   final Function() closeSheet;
-  final ScrollController scrollController;
+  final ScrollController? scrollController;
 
   const SearchPanel(
-      {Key key,
-      @required this.openSheet,
-      @required this.closeSheet,
-      @required this.scrollController})
+      {Key? key,
+      required this.openSheet,
+      required this.closeSheet,
+      required this.scrollController})
       : super(key: key);
 
   @override
@@ -25,10 +25,10 @@ class SearchPanel extends StatefulWidget {
 }
 
 class _SearchPanelState extends State<SearchPanel> {
-  FocusNode _myFocusNode;
+  FocusNode? _myFocusNode;
 
-  bool _ignoretextfield; //this is true when sheet is closed or moving
-  bool _focusWhenOpen;
+  bool? _ignoretextfield; //this is true when sheet is closed or moving
+  late bool _focusWhenOpen;
   @override
   void initState() {
     super.initState();
@@ -49,7 +49,7 @@ class _SearchPanelState extends State<SearchPanel> {
           listener: (context, state) {
             if (state is SheetOpen) {
               setState(() {
-                if (_focusWhenOpen) _myFocusNode.requestFocus();
+                if (_focusWhenOpen) _myFocusNode!.requestFocus();
                 _ignoretextfield = false;
                 _focusWhenOpen = false;
               });
@@ -171,7 +171,7 @@ class _SearchPanelState extends State<SearchPanel> {
 
   @override
   void dispose() {
-    _myFocusNode.dispose();
+    _myFocusNode!.dispose();
     super.dispose();
   }
 
@@ -194,9 +194,9 @@ class _SearchPanelState extends State<SearchPanel> {
 }
 
 class _PersistentHeader extends SliverPersistentHeaderDelegate {
-  final bool _ignoretextfield;
+  final bool? _ignoretextfield;
   final Function() _openAndFocusKeyboard;
-  final FocusNode _myFocusNode;
+  final FocusNode? _myFocusNode;
   final Function(String) _onSubmitted;
 
   _PersistentHeader(this._ignoretextfield, this._openAndFocusKeyboard,
@@ -229,7 +229,7 @@ class _PersistentHeader extends SliverPersistentHeaderDelegate {
                 left: 0,
                 right: 0,
                 child: IgnorePointer(
-                  ignoring: !_ignoretextfield,
+                  ignoring: !_ignoretextfield!,
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: _openAndFocusKeyboard,
@@ -238,7 +238,7 @@ class _PersistentHeader extends SliverPersistentHeaderDelegate {
                 ),
               ),
               IgnorePointer(
-                ignoring: _ignoretextfield,
+                ignoring: _ignoretextfield!,
                 child: ConstrainedBox(
                   constraints: BoxConstraints(maxHeight: 48, minHeight: 48),
                   child: TextField(
@@ -300,7 +300,7 @@ class _OptionsList extends StatelessWidget {
   final Function() closeSheet;
 
   const _OptionsList(
-      {Key key, @required this.onSelect, @required this.closeSheet})
+      {Key? key, required this.onSelect, required this.closeSheet})
       : super(key: key);
 
   @override
@@ -351,8 +351,8 @@ class _OptionsList extends StatelessWidget {
                 if (state is SearchHistoryLoading ||
                     state is SearchHistoryInitial) {
                   return Shimmer.fromColors(
-                    baseColor: Colors.grey[300],
-                    highlightColor: Colors.grey[200],
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[200]!,
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 8.0, top: 8),
                       child: Container(
@@ -406,7 +406,7 @@ class _OptionsList extends StatelessWidget {
                     ),
                   );
                 } else {
-                  LocationModel location;
+                  LocationModel? location;
                   if (state is SearchHistoryEmpty)
                     location = state.currentLocation;
                   if (state is SearchHistoryLoaded)
@@ -472,7 +472,7 @@ class SearchHistoryListItem extends StatelessWidget {
   final Function(LocationModel) onSelect;
 
   const SearchHistoryListItem(
-      {Key key, @required this.location, @required this.onSelect})
+      {Key? key, required this.location, required this.onSelect})
       : super(key: key);
 
   @override
@@ -504,14 +504,14 @@ class SearchHistoryListItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          location.name,
+                          location.name!,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                               fontSize: 14, color: const Color(0xFF4D4D4D)),
                         ),
                         Text(
-                          location.locality,
+                          location.locality!,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -535,8 +535,8 @@ class ShimmerList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: Colors.grey[200],
-      highlightColor: Colors.grey[100],
+      baseColor: Colors.grey[200]!,
+      highlightColor: Colors.grey[100]!,
       child: ListView.builder(
         padding: EdgeInsets.all(0),
         shrinkWrap: true,
