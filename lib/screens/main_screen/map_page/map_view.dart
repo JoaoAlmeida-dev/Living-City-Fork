@@ -138,8 +138,8 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
                   ));
                 } else {
                   //Trip Finished
-                  print(
-                      'trip line length: ' + _tripModel!.line.length.toString());
+                  print('trip line length: ' +
+                      _tripModel!.line.length.toString());
                   print('completed line length: ' +
                       _completedLine.length.toString());
                   print('route line length: ' + _routeLine.length.toString());
@@ -212,14 +212,15 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
         BlocListener<LocationBloc, LocationState>(
           listener: (context, state) {
             if (state is LocationLoaded)
-              _animatedMapMove(state.location?.coordinates ?? state.location as LatLng,
+              _animatedMapMove(
+                      state.location?.coordinates ?? state.location as LatLng,
                       _mapController!.zoom)
                   .then((value) => setState(() {
                         _locationMarkers.add(Marker(
                             height: 16,
                             width: 16,
-                            point:
-                                state.location?.coordinates ?? state.location as LatLng,
+                            point: state.location?.coordinates ??
+                                state.location as LatLng,
                             builder: (context) => markers.CircleMarker()));
                       }));
           },
@@ -260,8 +261,8 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
               });
             if (state is BSNavigationExplore) {
               setState(() {
-                _locationMarkers?.clear();
-                _pointMarkers?.clear();
+                _locationMarkers.clear();
+                _pointMarkers.clear();
               });
             } else if (state is BSNavigationSelectingLocation) {
               setState(() {
@@ -499,7 +500,8 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
         begin: _mapController!.center.latitude, end: destLocation.latitude);
     final _lngTween = Tween<double>(
         begin: _mapController!.center.longitude, end: destLocation.longitude);
-    final _zoomTween = Tween<double>(begin: _mapController!.zoom, end: destZoom);
+    final _zoomTween =
+        Tween<double>(begin: _mapController!.zoom, end: destZoom);
 
     // Create a animation controller that has a duration and a TickerProvider.
     var controller = AnimationController(

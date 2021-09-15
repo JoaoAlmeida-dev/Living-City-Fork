@@ -96,8 +96,8 @@ class CustomDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DialogTheme dialogTheme = DialogTheme.of(context);
-    final EdgeInsets effectivePadding = MediaQuery.of(context).viewInsets +
-        (insetPadding ?? const EdgeInsets.all(0.0));
+    final EdgeInsets effectivePadding =
+        MediaQuery.of(context).viewInsets + (insetPadding);
     return AnimatedPadding(
       padding: effectivePadding,
       duration: insetAnimationDuration,

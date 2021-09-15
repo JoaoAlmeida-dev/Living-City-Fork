@@ -75,11 +75,12 @@ class BluetoothDetectionService {
           count++;
         }
       } catch (e) {
-        print('Erro na stream: ' + e);
+        print('Erro na stream: ' + e.toString());
       }
       return count;
-    } catch (e) {
-      if (e.code == 'no_permissions') throw LocationPermissionException();
+    } on Exception catch (e) {
+      if (e.runtimeType == 'no_permissions')
+        throw LocationPermissionException();
       throw e;
     }
   }
@@ -96,11 +97,12 @@ class BluetoothDetectionService {
             await _bluetooth.startScan(timeout: scanTimeout);
         return results.length;
       } catch (e) {
-        print('Erro na stream: ' + e);
+        print('Erro na stream: ' + e.toString());
       }
       return 0;
-    } catch (e) {
-      if (e.code == 'no_permissions') throw LocationPermissionException();
+    } on Exception catch (e) {
+      if (e.runtimeType == 'no_permissions')
+        throw LocationPermissionException();
       throw e;
     }
   }

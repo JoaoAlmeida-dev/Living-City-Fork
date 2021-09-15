@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:living_city/data/models/trip_model.dart';
 import 'package:living_city/data/provider/trip_provider.dart';
 
@@ -33,7 +35,8 @@ class TripRepository {
   }
 
   Future completeTrip() async {
-    ProgressionTripModel trip = await (_tripProvider!.deleteAndGetCurrent() as FutureOr<ProgressionTripModel>);
+    ProgressionTripModel trip = await (_tripProvider!.deleteAndGetCurrent()
+        as FutureOr<ProgressionTripModel>);
     trip.id = null;
     _tripProvider!.insertCompleted(trip);
   }

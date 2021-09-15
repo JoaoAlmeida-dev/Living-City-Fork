@@ -1,13 +1,12 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:living_city/data/models/location_model.dart';
 import 'package:living_city/data/models/point_of_interest_model.dart';
 import 'package:living_city/data/repositories/location_repository.dart';
 import 'package:living_city/data/repositories/points_of_interest_repository.dart';
-import 'package:living_city/data/repositories/trip_repository.dart';
 import 'package:meta/meta.dart';
-import 'package:latlong2/latlong.dart';
 
 part 'location_event.dart';
 part 'location_state.dart';
@@ -54,7 +53,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       }
       await _locationRepository!.saveLocation(locationResult);
       yield LocationLoaded(locationResult);
-    } catch (e) {
+    } on Exception catch (e) {
       print(e);
       yield LocationError(e);
     }

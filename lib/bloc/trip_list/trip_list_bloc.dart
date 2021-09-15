@@ -5,7 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:living_city/data/models/trip_model.dart';
 import 'package:living_city/data/repositories/trip_repository.dart';
 import 'package:meta/meta.dart';
+
 import '../../core/example_data.dart' as coords;
+
 part 'trip_list_event.dart';
 part 'trip_list_state.dart';
 
@@ -65,7 +67,8 @@ class TripListBloc extends Bloc<TripListEvent, TripListState> {
       // List<TripModel> trips2 = await _tripRepository.getPlannedTrips();
       // print('Isto devia ser 4 e é ${trips2.length}');
 
-      ProgressionTripModel? currentTrip = await _tripRepository!.getCurrentTrip();
+      ProgressionTripModel? currentTrip =
+          await _tripRepository!.getCurrentTrip();
       List<TripModel> plannedList = await _tripRepository!.getPlannedTrips();
       List<ProgressionTripModel> completedList =
           await _tripRepository!.getCompletedTrips();
@@ -77,7 +80,7 @@ class TripListBloc extends Bloc<TripListEvent, TripListState> {
       for (ProgressionTripModel trip in completedList) {
         sumCalories += trip.originalTrip.calories!;
         sumDistance += trip.originalTrip.distance!;
-        sumPOIsVisited += trip.originalTrip.pois?.length ?? 0;
+        sumPOIsVisited += trip.originalTrip.pois.length;
         sumSustainability += trip.originalTrip.sustainability!;
       }
 

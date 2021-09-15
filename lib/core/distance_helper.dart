@@ -130,7 +130,7 @@ int locationIndexOnEdgeOrPath(LatLng point, List<LatLng> poly, bool closed,
     double maxAcceptable = lat3 + tolerance;
     double y1 = mercator(lat1);
     double y3 = mercator(lat3);
-    List<double?> xTry = List<double?>(3);
+    List<double?> xTry = List<double?>.filled(3, null, growable: false);
     for (LatLng point2 in poly) {
       double lat2 = point2.latitudeInRad;
       double y2 = mercator(lat2);
@@ -202,7 +202,8 @@ double? distanceTo(List<LatLng> line1, List<LatLng> line2) {
   int n = line1.length;
   int m = line2.length;
 
-  var dtw = List.generate(n + 1, (i) => List(m + 1), growable: false);
+  var dtw = List.generate(n + 1, (i) => List<double>.filled(m + 1, 0),
+      growable: false);
 
   for (int i = 1; i <= n; i++) dtw[i][0] = double.maxFinite;
 
