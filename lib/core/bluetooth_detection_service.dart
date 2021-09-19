@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:living_city/core/exceptions.dart';
+import 'package:living_city/core/Exceptions.dart';
 import 'package:living_city/data/models/bluetooth_device_model.dart';
 import 'package:living_city/data/repositories/bluetooth_device_repository.dart';
 import 'package:living_city/data/repositories/location_repository.dart';
