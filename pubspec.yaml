@@ -104,7 +104,7 @@ flutter:
     # - assets/circle-cropped.png
     # - assets/2017-07-03_portugal_lisbon.mbtiles
     # - assets/tiles.mbtiles
-    - assets/map/*
+    - assets/map/
     # - assets/map/10/484/ #10 484-486
     # - assets/map/10/485/
     # - assets/map/10/486/
