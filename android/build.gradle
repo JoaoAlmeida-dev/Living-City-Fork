@@ -1,9 +1,12 @@
-
 buildscript {
     ext.kotlin_version = '1.3.21'
     repositories {
         google()
         jcenter()
+    }
+
+    plugins {
+        id 'maven-publish'
     }
 
     dependencies {
@@ -12,7 +15,6 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
-
 
 allprojects {
     repositories {
@@ -32,3 +34,11 @@ subprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+app{
+
+    android{
+        buildToolsVersion "27.0.1"
+    }
+}
+

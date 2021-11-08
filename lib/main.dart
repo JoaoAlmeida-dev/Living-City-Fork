@@ -1,12 +1,11 @@
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:living_city/core/bluetooth_detection_service.dart';
 import 'package:living_city/core/lifecycle_observer.dart';
 import 'package:living_city/dependency_injection/injection_container.dart'
     as di;
+
 import './screens/main_screen/main_screen.dart';
 import 'bloc/bloc_delegate.dart';
-import 'package:bloc/bloc.dart';
-import 'package:http/http.dart' as http;
 
 void main() {
   var binding = WidgetsFlutterBinding.ensureInitialized();
