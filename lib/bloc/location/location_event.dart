@@ -6,16 +6,16 @@ abstract class LocationEvent {
 }
 
 class LoadLocation extends LocationEvent {
-  final String address;
-  final LatLng coordinates;
+  final String? address;
+  final LatLng? coordinates;
 
   LoadLocation({this.address, this.coordinates});
 }
 
 class ShowPreLoadedLocation extends LocationEvent {
-  final LocationModel location;
+  final LocationModel? location;
 
-  ShowPreLoadedLocation({@required this.location});
+  ShowPreLoadedLocation({required this.location});
 }
 
 class ClearLocation extends LocationEvent {

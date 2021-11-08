@@ -1,6 +1,6 @@
 import 'dart:math';
-import 'package:latlong/latlong.dart';
-import 'package:living_city/data/models/point_of_interest_model.dart';
+
+import 'package:latlong2/latlong.dart';
 
 double clamp(double x, double low, double high) {
   return x < low ? low : (x > high ? high : x);
@@ -15,11 +15,11 @@ double wrap(double n, double min, double max) {
 }
 
 double mercator(double lat) {
-  return log(tan(lat * 0.5 + PI / 4));
+  return log(tan(lat * 0.5 + pi / 4));
 }
 
 double inverseMercator(double y) {
-  return 2 * atan(exp(y)) - PI / 2;
+  return 2 * atan(exp(y)) - pi / 2;
 }
 
 double hav(double x) {
@@ -101,7 +101,7 @@ int locationIndexOnEdgeOrPath(LatLng point, List<LatLng> poly, bool closed,
   if (size == 0) {
     return -1;
   }
-  double tolerance = toleranceEarth / EARTH_RADIUS;
+  double tolerance = toleranceEarth / earthRadius;
   double havTolerance = hav(tolerance);
   double lat3 = point.latitudeInRad;
   double lng3 = point.longitudeInRad;
@@ -130,7 +130,7 @@ int locationIndexOnEdgeOrPath(LatLng point, List<LatLng> poly, bool closed,
     double maxAcceptable = lat3 + tolerance;
     double y1 = mercator(lat1);
     double y3 = mercator(lat3);
-    List<double> xTry = List<double>(3);
+    List<double?> xTry = List<double?>.filled(3, null, growable: false);
     for (LatLng point2 in poly) {
       double lat2 = point2.latitudeInRad;
       double y2 = mercator(lat2);
@@ -138,21 +138,21 @@ int locationIndexOnEdgeOrPath(LatLng point, List<LatLng> poly, bool closed,
       if (max(lat1, lat2) >= minAcceptable &&
           min(lat1, lat2) <= maxAcceptable) {
         // We offset longitudes by -lng1; the implicit x1 is 0.
-        double x2 = wrap(lng2 - lng1, -PI, PI);
-        double x3Base = wrap(lng3 - lng1, -PI, PI);
+        double x2 = wrap(lng2 - lng1, -pi, pi);
+        double x3Base = wrap(lng3 - lng1, -pi, pi);
         xTry[0] = x3Base;
         // Also explore wrapping of x3Base around the world in both directions.
-        xTry[1] = x3Base + 2 * PI;
-        xTry[2] = x3Base - 2 * PI;
-        for (double x3 in xTry) {
+        xTry[1] = x3Base + 2 * pi;
+        xTry[2] = x3Base - 2 * pi;
+        for (double? x3 in xTry) {
           double dy = y2 - y1;
           double len2 = x2 * x2 + dy * dy;
           double t =
-              len2 <= 0 ? 0 : clamp((x3 * x2 + (y3 - y1) * dy) / len2, 0, 1);
+              len2 <= 0 ? 0 : clamp((x3! * x2 + (y3 - y1) * dy) / len2, 0, 1);
           double xClosest = t * x2;
           double yClosest = y1 + t * dy;
           double latClosest = inverseMercator(yClosest);
-          double havDist = havDistance(lat3, latClosest, x3 - xClosest);
+          double havDist = havDistance(lat3, latClosest, x3! - xClosest);
           if (havDist < havTolerance) {
             return max(0, idx - 1);
           }
@@ -167,10 +167,10 @@ int locationIndexOnEdgeOrPath(LatLng point, List<LatLng> poly, bool closed,
   return -1;
 }
 
-LatLng nearestPointIfClose(
+LatLng? nearestPointIfClose(
     LatLng location, List<LatLng> pois, double distanceTreshold) {
-  double nearestDistance;
-  LatLng nearestPoi;
+  double? nearestDistance;
+  LatLng? nearestPoi;
   for (LatLng poi in pois) {
     final distance =
         Distance(roundResult: true).as(LengthUnit.Meter, location, poi);
@@ -184,9 +184,9 @@ LatLng nearestPointIfClose(
   return nearestPoi;
 }
 
-LatLng nearestCoordinateToPoint(List<LatLng> line, LatLng poi) {
-  double nearestDistance;
-  LatLng nearestCoordinates;
+LatLng? nearestCoordinateToPoint(List<LatLng> line, LatLng poi) {
+  double? nearestDistance;
+  LatLng? nearestCoordinates;
   for (LatLng coordinate in line) {
     final distance =
         Distance(roundResult: true).as(LengthUnit.Meter, coordinate, poi);
@@ -198,11 +198,12 @@ LatLng nearestCoordinateToPoint(List<LatLng> line, LatLng poi) {
   return nearestCoordinates;
 }
 
-double distanceTo(List<LatLng> line1, List<LatLng> line2) {
+double? distanceTo(List<LatLng> line1, List<LatLng> line2) {
   int n = line1.length;
   int m = line2.length;
 
-  var dtw = List.generate(n + 1, (i) => List(m + 1), growable: false);
+  var dtw = List.generate(n + 1, (i) => List<double>.filled(m + 1, 0),
+      growable: false);
 
   for (int i = 1; i <= n; i++) dtw[i][0] = double.maxFinite;
 

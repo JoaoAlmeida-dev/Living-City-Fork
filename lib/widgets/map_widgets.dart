@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:latlong/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
+
 import '../widgets/markers.dart' as marker_widgets;
 
 class LineMap extends StatelessWidget {
@@ -9,8 +10,8 @@ class LineMap extends StatelessWidget {
   final double padding;
 
   const LineMap({
-    Key key,
-    @required this.line,
+    Key? key,
+    required this.line,
     this.backgroundColor = const Color(0xffFCFBE7),
     this.padding = 16,
   }) : super(key: key);
@@ -19,7 +20,7 @@ class LineMap extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlutterMap(
         options: MapOptions(
-          interactive: false,
+          //interactive: false,
           bounds: LatLngBounds.fromPoints(line),
           boundsOptions:
               FitBoundsOptions(padding: EdgeInsets.all(padding), maxZoom: 16),
@@ -46,10 +47,10 @@ class LineAndMarkersMap extends StatelessWidget {
   final double padding;
 
   const LineAndMarkersMap({
-    Key key,
-    @required this.line,
-    @required this.markers,
-    @required this.target,
+    Key? key,
+    required this.line,
+    required this.markers,
+    required this.target,
     this.backgroundColor = const Color(0xffFCFBE7),
     this.padding = 18,
   }) : super(key: key);
@@ -58,7 +59,7 @@ class LineAndMarkersMap extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlutterMap(
         options: MapOptions(
-          interactive: false,
+          //interactive: false,
           bounds: LatLngBounds.fromPoints(line),
           boundsOptions:
               FitBoundsOptions(padding: EdgeInsets.all(padding), maxZoom: 16),

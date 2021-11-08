@@ -7,7 +7,7 @@ abstract class BottomSheetEvent {
 
 class SheetMoved extends BottomSheetEvent {
   final double factor;
-  const SheetMoved({@required this.factor});
+  const SheetMoved({required this.factor});
 }
 
 class SheetClosure extends BottomSheetEvent {

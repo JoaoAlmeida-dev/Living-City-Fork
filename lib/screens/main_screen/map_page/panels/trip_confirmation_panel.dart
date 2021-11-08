@@ -15,13 +15,13 @@ import 'package:timeline_tile/timeline_tile.dart';
 
 class TripConfirmationPanel extends StatefulWidget {
   final TripPlanModel tripPlanModel;
-  final ScrollController scrollController;
-  final double heightLimit;
+  final ScrollController? scrollController;
+  final double? heightLimit;
 
   const TripConfirmationPanel({
-    @required this.tripPlanModel,
-    @required this.scrollController,
-    @required this.heightLimit,
+    required this.tripPlanModel,
+    required this.scrollController,
+    required this.heightLimit,
   });
 
   @override
@@ -42,7 +42,7 @@ class _TripConfirmationPanelState extends State<TripConfirmationPanel> {
       alignment: Alignment.topCenter,
       child: Container(
         color: Colors.white,
-        height: widget.heightLimit - 24,
+        height: widget.heightLimit! - 24,
         width: double.infinity,
         child: BlocBuilder<RouteRequestBloc, RouteRequestState>(
           builder: (context, state) {
@@ -50,8 +50,8 @@ class _TripConfirmationPanelState extends State<TripConfirmationPanel> {
               return Padding(
                 padding: const EdgeInsets.only(right: 64.0),
                 child: Shimmer.fromColors(
-                  baseColor: Colors.grey[100],
-                  highlightColor: Colors.grey[50],
+                  baseColor: Colors.grey[100]!,
+                  highlightColor: Colors.grey[50]!,
                   child: Container(
                     decoration: BoxDecoration(
                         color: Colors.white,
@@ -263,7 +263,7 @@ class _TripConfirmationPanelState extends State<TripConfirmationPanel> {
                               Icon(Icons.access_time),
                               const SizedBox(width: 8),
                               Text(_formatDuration(
-                                      (state.tripModel.durationTime / 60000)
+                                      (state.tripModel.durationTime! / 60000)
                                           .round())
                                   /*_formatDuration(
                                     DateTime.fromMillisecondsSinceEpoch(
@@ -290,12 +290,12 @@ class _TripConfirmationPanelState extends State<TripConfirmationPanel> {
                             children: [
                               Image.asset('assets/eco_leaf.png',
                                   color: leafColor.leafColor(state
-                                              .tripModel.sustainability >=
+                                              .tripModel.sustainability! >=
                                           80
                                       ? 3
-                                      : state.tripModel.sustainability >= 70
+                                      : state.tripModel.sustainability! >= 70
                                           ? 2
-                                          : state.tripModel.sustainability >= 60
+                                          : state.tripModel.sustainability! >= 60
                                               ? 1
                                               : 0),
                                   height: 24,
@@ -330,7 +330,7 @@ class _TripConfirmationPanelState extends State<TripConfirmationPanel> {
                             padding: EdgeInsets.only(right: 12),
                             indicatorXY: 0),
                         beforeLineStyle:
-                            LineStyle(color: Colors.grey[200], thickness: 2),
+                            LineStyle(color: Colors.grey[200]!, thickness: 2),
                         endChild: Transform.translate(
                           offset: Offset(0, -4.5),
                           child: Padding(
@@ -463,7 +463,7 @@ _formatDuration(int duration) {
 class TripOverviewPOIItem extends StatelessWidget {
   final TimedPointOfInterestModel poi;
 
-  const TripOverviewPOIItem({Key key, @required this.poi}) : super(key: key);
+  const TripOverviewPOIItem({Key? key, required this.poi}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -484,7 +484,7 @@ class TripOverviewPOIItem extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
                 _formatDatetoHourMinutes(
-                    DateTime.fromMillisecondsSinceEpoch(poi.timestamp)),
+                    DateTime.fromMillisecondsSinceEpoch(poi.timestamp!)),
                 style:
                     const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
           ],
@@ -512,14 +512,14 @@ class TripOverviewPOIItem extends StatelessWidget {
 
 class TripOverviewLocationItem extends StatelessWidget {
   final LocationModel location;
-  final int time;
+  final int? time;
   final bool origin;
 
   const TripOverviewLocationItem(
-      {Key key,
-      @required this.location,
-      @required this.time,
-      @required this.origin})
+      {Key? key,
+      required this.location,
+      required this.time,
+      required this.origin})
       : super(key: key);
 
   @override
@@ -540,7 +540,7 @@ class TripOverviewLocationItem extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               _formatDatetoHourMinutes(
-                  DateTime.fromMillisecondsSinceEpoch(time)),
+                  DateTime.fromMillisecondsSinceEpoch(time!)),
               style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
           ],

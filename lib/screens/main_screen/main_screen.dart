@@ -13,7 +13,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _pageIndex;
+  int? _pageIndex;
 
   final _pageController = PageController();
 
@@ -22,9 +22,9 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     _pageIndex = 0;
     _pageController.addListener(() {
-      if (_pageController.page.round() != _pageIndex) {
+      if (_pageController.page!.round() != _pageIndex) {
         setState(() {
-          _pageIndex = _pageController.page.round();
+          _pageIndex = _pageController.page!.round();
         });
       }
     });
@@ -48,7 +48,7 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _pageIndex,
+        currentIndex: _pageIndex!,
         onTap: _showPage,
         items: [
           BottomNavigationBarItem(

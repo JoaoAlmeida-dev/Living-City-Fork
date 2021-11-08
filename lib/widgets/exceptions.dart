@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class EmptyListException extends StatelessWidget {
-  final String message;
-  final Widget child;
+  final String? message;
+  final Widget? child;
   final double imageWidth;
 
   const EmptyListException(
-      {Key key, this.message, this.imageWidth = 192, this.child})
+      {Key? key, this.message, this.imageWidth = 192, this.child})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class EmptyListException extends StatelessWidget {
               )),
         ),
         const SizedBox(height: 8),
-        child ?? Text(message)
+        child ?? Text(message!)
       ],
     );
   }

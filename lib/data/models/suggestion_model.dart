@@ -5,7 +5,7 @@ enum SuggestionType {
   store,
 }
 
-SuggestionType _convertStringToType(String s) {
+SuggestionType? _convertStringToType(String? s) {
   switch (s) {
     case 'museum':
       return SuggestionType.museum;
@@ -25,7 +25,7 @@ enum SuggestionCapacity {
   full,
 }
 
-SuggestionCapacity _convertStringToCapacity(String s) {
+SuggestionCapacity? _convertStringToCapacity(String? s) {
   switch (s) {
     case 'low':
       return SuggestionCapacity.low;
@@ -45,12 +45,12 @@ SuggestionCapacity _convertStringToCapacity(String s) {
 }
 
 class SuggestionModel {
-  final String title;
-  final SuggestionType type;
-  final SuggestionCapacity capacity;
+  final String? title;
+  final SuggestionType? type;
+  final SuggestionCapacity? capacity;
 
   const SuggestionModel(
-      {@required this.title, @required this.type, @required this.capacity});
+      {required this.title, required this.type, required this.capacity});
 
   factory SuggestionModel.fromJSON(Map<String, dynamic> json) {
     return SuggestionModel(

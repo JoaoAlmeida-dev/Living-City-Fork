@@ -16,8 +16,8 @@ part 'route_request_state.dart';
 class RouteRequestBloc extends Bloc<RouteRequestEvent, RouteRequestState> {
   final http.Client client;
   RouteRequestBloc(this.client) : super(RouteRequestInitial());
-  LocationModel origin;
-  LocationModel destination;
+  LocationModel? origin;
+  LocationModel? destination;
 
   @override
   Stream<RouteRequestState> mapEventToState(
@@ -33,8 +33,8 @@ class RouteRequestBloc extends Bloc<RouteRequestEvent, RouteRequestState> {
     origin = event.tripPlanModel.origin;
     destination = event.tripPlanModel.destination;
     var json = jsonDecode(example.cenario2);
-    json['origin']['name'] = origin.name;
-    json['destination']['name'] = destination.name;
+    json['origin']['name'] = origin!.name;
+    json['destination']['name'] = destination!.name;
     final route = TripModel.fromJson(json);
     yield RouteRequestLoaded(route);
     /* try {

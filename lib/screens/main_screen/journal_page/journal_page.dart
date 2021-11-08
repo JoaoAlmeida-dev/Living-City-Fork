@@ -12,7 +12,7 @@ class JournalPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        final NavigatorState navigator = navigatorKey.currentState;
+        final NavigatorState navigator = navigatorKey.currentState!;
         if (!navigator.canPop()) return true;
         navigator.pop();
         return false;

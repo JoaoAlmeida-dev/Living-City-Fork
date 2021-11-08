@@ -7,15 +7,15 @@ import '../../../../bloc/bs_navigation/bs_navigation_bloc.dart';
 import '../../../../data/models/location_model.dart';
 
 class PlanPointsPanel extends StatelessWidget {
-  final LocationModel origin;
-  final LocationModel destination;
-  final int date;
+  final LocationModel? origin;
+  final LocationModel? destination;
+  final int? date;
 
   const PlanPointsPanel(
-      {Key key,
-      @required this.origin,
-      @required this.destination,
-      @required this.date})
+      {Key? key,
+      required this.origin,
+      required this.destination,
+      required this.date})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -354,13 +354,13 @@ class CustomDateDialog extends StatefulWidget {
 
 class _CustomDateDialogState extends State<CustomDateDialog> {
   PageController _controller = PageController(viewportFraction: 1);
-  DateTime _initialDate;
-  DateTime _selecteDate;
+  DateTime? _initialDate;
+  DateTime? _selecteDate;
 
   final DateTime _minimumDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
-  bool _useInitial;
+  bool? _useInitial;
 
   @override
   void initState() {
@@ -375,7 +375,7 @@ class _CustomDateDialogState extends State<CustomDateDialog> {
     _useInitial = true;
     _controller.addListener(() {
       _controller.addListener(() => setState(() {
-            if (_controller.page.floor() == 0) {
+            if (_controller.page!.floor() == 0) {
               _useInitial = true;
               _selecteDate = _initialDate;
             } else {
@@ -407,9 +407,9 @@ class _CustomDateDialogState extends State<CustomDateDialog> {
             key: ValueKey(_useInitial),
             minuteInterval: 5,
             onDateTimeChanged: (date) => setState(() => _selecteDate = date),
-            initialDateTime: _useInitial ? _initialDate : _minimumDate,
-            minimumDate: _useInitial ? _initialDate : _minimumDate,
-            maximumDate: _initialDate.add(const Duration(days: 5)),
+            initialDateTime: _useInitial! ? _initialDate : _minimumDate,
+            minimumDate: _useInitial! ? _initialDate : _minimumDate,
+            maximumDate: _initialDate!.add(const Duration(days: 5)),
             mode: CupertinoDatePickerMode.time,
           ),
         ),
@@ -477,10 +477,10 @@ class _CustomDateDialogState extends State<CustomDateDialog> {
                     DateTime.now().year,
                     DateTime.now().month,
                     DateTime.now()
-                        .add(Duration(days: _controller.page.floor()))
+                        .add(Duration(days: _controller.page!.floor()))
                         .day,
-                    _selecteDate.hour,
-                    _selecteDate.minute,
+                    _selecteDate!.hour,
+                    _selecteDate!.minute,
                   )),
               borderRadius: BorderRadius.circular(8),
               child: Container(

@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:living_city/data/models/point_of_interest_model.dart';
+import 'package:latlong2/latlong.dart';
+
+import '../../../bloc/bs_navigation/bs_navigation_bloc.dart';
 import '../../../bloc/location/location_bloc.dart';
-import 'package:latlong/latlong.dart';
-import 'dart:math' as Math;
-import '../../../core/distance_helper.dart';
+import '../../../bloc/points_of_interest/points_of_interest_bloc.dart';
 import '../../../bloc/route_request/route_request_bloc.dart';
 import '../../../bloc/user_location/user_location_bloc.dart';
+import '../../../core/distance_helper.dart';
 import '../../../data/models/trip_model.dart';
-import '../../../bloc/bs_navigation/bs_navigation_bloc.dart';
-import '../../../bloc/points_of_interest/points_of_interest_bloc.dart';
 import '../../../widgets/markers.dart' as markers;
-import 'map_controls.dart';
 
 class MapView extends StatefulWidget {
   const MapView();
@@ -22,25 +20,25 @@ class MapView extends StatefulWidget {
 }
 
 class _MapViewState extends State<MapView> with TickerProviderStateMixin {
-  MapController _mapController;
+  MapController? _mapController;
 
   //flutter map is bugged and calls onPositionChanged the first time it builds
-  bool _initialMove;
+  late bool _initialMove;
 
   //flags for map control widget
-  bool _isCenteringUser;
-  bool _isShowingPOIs;
+  bool? _isCenteringUser;
+  late bool _isShowingPOIs;
 
   List<Marker> _pointsOfInterest = [];
-  List<Marker> _locationMarkers = [];
-  List<Marker> _pointMarkers = [];
+  List<Marker?> _locationMarkers = [];
+  List<Marker?> _pointMarkers = [];
   List<LatLng> _userLine = [];
   List<LatLng> _completedLine = [];
   List<Marker> _completedMarkers = [];
   List<LatLng> _routeLine = [];
-  Marker _userLocation;
+  Marker? _userLocation;
 
-  TripModel _tripModel;
+  TripModel? _tripModel;
 
   bool _wasTrip = false;
 
@@ -90,25 +88,25 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
         BlocListener<UserLocationBloc, UserLocationState>(
             listener: (context, state) {
           if (state is UserLocationLoaded) {
-            bool isNearRoute;
+            bool? isNearRoute;
             if (_routeLine != null) {
               final int result = locationIndexOnEdgeOrPath(
                   state.location, _routeLine, false, true, 30);
               isNearRoute = result != -1;
             }
             if (_tripModel != null) {
-              final LatLng closestPoi = nearestPointIfClose(
+              final LatLng? closestPoi = nearestPointIfClose(
                   state.location,
-                  _tripModel.pois
+                  _tripModel!.pois
                       .map((e) => e.poi.coordinates)
                       .where((element) => _pointMarkers
-                          .any((marker) => marker.point == element))
+                          .any((marker) => marker!.point == element))
                       .toList()
-                        ..add(_tripModel.destination.coordinates),
+                    ..add(_tripModel!.destination.coordinates),
                   30);
               if (closestPoi != null) {
                 final _linesToRemove = [];
-                final LatLng coordinate =
+                final LatLng? coordinate =
                     nearestCoordinateToPoint(_routeLine, closestPoi);
                 for (LatLng line in _routeLine) {
                   if (line == coordinate) {
@@ -119,16 +117,16 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
                   _linesToRemove.add(line);
                   _completedLine.add(line);
                 }
-                for (LatLng point in _linesToRemove)
+                for (LatLng point in _linesToRemove as Iterable<LatLng>)
                   _routeLine.removeAt(_routeLine.indexOf(point));
                 /*_routeLine
                     .removeWhere((element) => _linesToRemove.contains(element));*/
-                final int order = _tripModel.pois.indexWhere(
+                final int order = _tripModel!.pois.indexWhere(
                         (element) => element.poi.coordinates == closestPoi) +
                     1;
                 if (order != 0) {
                   _pointMarkers
-                      .removeWhere((element) => element.point == closestPoi);
+                      .removeWhere((element) => element!.point == closestPoi);
                   _completedMarkers.add(Marker(
                     point: closestPoi,
                     height: 20,
@@ -140,14 +138,14 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
                   ));
                 } else {
                   //Trip Finished
-                  print(
-                      'trip line length: ' + _tripModel.line.length.toString());
+                  print('trip line length: ' +
+                      _tripModel!.line.length.toString());
                   print('completed line length: ' +
                       _completedLine.length.toString());
                   print('route line length: ' + _routeLine.length.toString());
 
                   print('user line length: ' + _userLine.length.toString());
-                  print('Distance: ${distanceTo(_userLine, _tripModel.line)}');
+                  print('Distance: ${distanceTo(_userLine, _tripModel!.line)}');
                 }
               }
             }
@@ -214,14 +212,15 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
         BlocListener<LocationBloc, LocationState>(
           listener: (context, state) {
             if (state is LocationLoaded)
-              _animatedMapMove(state.location?.coordinates ?? state.location,
-                      _mapController.zoom)
+              _animatedMapMove(
+                      state.location?.coordinates ?? state.location as LatLng,
+                      _mapController!.zoom)
                   .then((value) => setState(() {
                         _locationMarkers.add(Marker(
                             height: 16,
                             width: 16,
-                            point:
-                                state.location?.coordinates ?? state.location,
+                            point: state.location?.coordinates ??
+                                state.location as LatLng,
                             builder: (context) => markers.CircleMarker()));
                       }));
           },
@@ -262,8 +261,8 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
               });
             if (state is BSNavigationExplore) {
               setState(() {
-                _locationMarkers?.clear();
-                _pointMarkers?.clear();
+                _locationMarkers.clear();
+                _pointMarkers.clear();
               });
             } else if (state is BSNavigationSelectingLocation) {
               setState(() {
@@ -284,27 +283,27 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
               setState(() {
                 bool roundtrip = state.origin != null &&
                     state.destination != null &&
-                    state.origin.coordinates.latitude ==
-                        state.destination.coordinates.latitude &&
-                    state.origin.coordinates.longitude ==
-                        state.destination.coordinates.longitude;
+                    state.origin!.coordinates.latitude ==
+                        state.destination!.coordinates.latitude &&
+                    state.origin!.coordinates.longitude ==
+                        state.destination!.coordinates.longitude;
                 if (state.origin != null && !roundtrip)
                   _pointMarkers.add(Marker(
                       height: 16,
                       width: 16,
-                      point: state.origin.coordinates,
+                      point: state.origin!.coordinates,
                       builder: (context) => markers.CircleMarker()));
                 if (state.destination != null)
                   _pointMarkers.add(Marker(
                       height: 16,
                       width: 16,
-                      point: state.destination.coordinates,
+                      point: state.destination!.coordinates,
                       builder: (context) => markers.TripDestinationMarker()));
                 if (state.origin != null && state.destination != null) {
                   _isShowingPOIs = false;
                   _animatedFitBounds(
-                      LatLngBounds(state.origin.coordinates,
-                          state.destination.coordinates),
+                      LatLngBounds(state.origin!.coordinates,
+                          state.destination!.coordinates),
                       options: FitBoundsOptions(
                         maxZoom: 16,
                         padding: EdgeInsets.only(
@@ -387,7 +386,7 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
                       (_isShowingPOIs ? _pointsOfInterest : []) +
                       _locationMarkers +
                       (_userLocation != null ? [_userLocation] : []) +
-                      _completedMarkers,
+                      _completedMarkers as List<Marker>,
                 )
             ],
           ),
@@ -498,10 +497,11 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
     // Create some tweens. These serve to split up the transition from one location to another.
     // In our case, we want to split the transition be<tween> our current map center and the destination.
     final _latTween = Tween<double>(
-        begin: _mapController.center.latitude, end: destLocation.latitude);
+        begin: _mapController!.center.latitude, end: destLocation.latitude);
     final _lngTween = Tween<double>(
-        begin: _mapController.center.longitude, end: destLocation.longitude);
-    final _zoomTween = Tween<double>(begin: _mapController.zoom, end: destZoom);
+        begin: _mapController!.center.longitude, end: destLocation.longitude);
+    final _zoomTween =
+        Tween<double>(begin: _mapController!.zoom, end: destZoom);
 
     // Create a animation controller that has a duration and a TickerProvider.
     var controller = AnimationController(
@@ -512,7 +512,7 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
         CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
 
     controller.addListener(() {
-      _mapController.move(
+      _mapController!.move(
           LatLng(_latTween.evaluate(animation), _lngTween.evaluate(animation)),
           _zoomTween.evaluate(animation));
     });
@@ -529,20 +529,20 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
   }
 
   Future<void> _animatedFitBounds(LatLngBounds bounds,
-      {FitBoundsOptions options}) async {
+      {required FitBoundsOptions options}) async {
     // Create some tweens. These serve to split up the transition from one location to another.
     final _swLatTween = Tween<double>(
-        begin: _mapController.bounds.southWest.latitude,
-        end: bounds.southWest.latitude);
+        begin: _mapController!.bounds!.southWest!.latitude,
+        end: bounds.southWest!.latitude);
     final _swLngTween = Tween<double>(
-        begin: _mapController.bounds.southWest.longitude,
-        end: bounds.southWest.longitude);
+        begin: _mapController!.bounds!.southWest!.longitude,
+        end: bounds.southWest!.longitude);
     final _neLatTween = Tween<double>(
-        begin: _mapController.bounds.northEast.latitude,
-        end: bounds.northEast.latitude);
+        begin: _mapController!.bounds!.northEast!.latitude,
+        end: bounds.northEast!.latitude);
     final _neLngTween = Tween<double>(
-        begin: _mapController.bounds.northEast.longitude,
-        end: bounds.northEast.longitude);
+        begin: _mapController!.bounds!.northEast!.longitude,
+        end: bounds.northEast!.longitude);
 
     final _paddingTween =
         Tween<EdgeInsets>(begin: EdgeInsets.all(0), end: options.padding);
@@ -556,7 +556,7 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
         CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
 
     controller.addListener(() {
-      _mapController.fitBounds(
+      _mapController!.fitBounds(
           LatLngBounds(
             LatLng(_swLatTween.evaluate(animation),
                 _swLngTween.evaluate(animation)),

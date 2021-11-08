@@ -15,11 +15,11 @@ class SearchHistoryLoading extends SearchHistoryState {
 
 class SearchHistoryLoaded extends SearchHistoryState {
   final List<LocationModel> searchHistory;
-  final LocationModel currentLocation;
+  final LocationModel? currentLocation;
   const SearchHistoryLoaded(this.searchHistory, this.currentLocation);
 }
 
 class SearchHistoryEmpty extends SearchHistoryState {
-  final LocationModel currentLocation;
+  final LocationModel? currentLocation;
   const SearchHistoryEmpty(this.currentLocation);
 }
