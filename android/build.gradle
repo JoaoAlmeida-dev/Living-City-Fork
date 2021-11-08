@@ -5,9 +5,9 @@ buildscript {
         jcenter()
     }
 
-    plugins {
-        id 'maven-publish'
-    }
+    //plugins {
+    //    id 'maven-publish'
+    //}
 
     dependencies {
         //classpath 'com.android.tools.build:gradle:3.5.0'
@@ -35,10 +35,10 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-app{
-
-    android{
-        buildToolsVersion "27.0.1"
-    }
-}
+//app{
+//
+//    android{
+//        buildToolsVersion "27.0.1"
+//    }
+//}
 
