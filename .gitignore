@@ -73,7 +73,6 @@
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 # Map assets
-**/assets/map/
 .flutter-plugins-dependencies
 coverage/lcov.info
 
